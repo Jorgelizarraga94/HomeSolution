@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 public class Proyecto implements Iproyecto{
-    private Long idProyecto;
-    private Long contadorIdProyecto;
+    private int idProyecto;
+    private int contadorIdProyecto;
     private String direccionVivienda;
     private String fechaInicioProyecto;
     private String fechaEstimadaFinProyecto;

@@ -1,8 +1,8 @@
 package entidades;
 
 public class Tarea implements ITarea{
-    private Long idTarea;
-    private Long contadorId;
+    private int idTarea;
+    private int contadorId;
     private String titulo;
     private String descripcion;
     private double cantidadDiasFinalizacion;

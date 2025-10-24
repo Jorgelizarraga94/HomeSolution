@@ -2,7 +2,7 @@ package entidades;
 
 public class EmpleadoContratado extends Empleado implements IempleadoContratado{
     private double costoHora;
-    private Long contadorLegajo;
+    private int contadorLegajo;
 
     public EmpleadoContratado(String nombre, double costoHora){
         this.nombre = nombre;
