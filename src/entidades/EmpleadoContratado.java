@@ -4,6 +4,7 @@ public class EmpleadoContratado extends Empleado implements IempleadoContratado{
     private double costoHora;
     private int contadorLegajo;
 
+    //tenemos que hacer que los legajos de empleadosContratados comienzen a partir del 100
     public EmpleadoContratado(String nombre, double costoHora){
         this.nombre = nombre;
         this.legajo = contadorLegajo+1;
@@ -11,7 +12,7 @@ public class EmpleadoContratado extends Empleado implements IempleadoContratado{
     }
     @Override
     public double verCostoHora() {
-        return costoHora;
+        return this.costoHora;
     }
 
     @Override

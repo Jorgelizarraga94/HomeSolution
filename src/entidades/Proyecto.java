@@ -21,7 +21,7 @@ public class Proyecto implements Iproyecto{
         this.direccionVivienda = direccionVivienda;
         this.tareas = new ArrayList<>();
         for(int i=0 ; i<titulos.length; i++){
-            Tarea tarea = new Tarea(titulos[i],descripcion[i],duracion[i]);
+            Tarea tarea = new Tarea(titulos[i],descripcion[i],duracion[i],0);
             this.tareas.add(tarea);
         }
         this.fechaInicioProyecto = fechaInicioProyecto;
@@ -31,66 +31,71 @@ public class Proyecto implements Iproyecto{
 
     @Override
     public void agregarTarea(String titulo, String descripcion, Integer cantidadDiasFinalizacion, Integer costo) {
-
+        Tarea tarea = new Tarea(titulo, descripcion, cantidadDiasFinalizacion, costo);
+        this.tareas.add(tarea);
     }
 
     @Override
     public void actualizarFinalizado() {
-
+        this.finalizado = true;
     }
 
     @Override
-    public double CalculoCostoFinal() {
+    public double CalculoCostoFinal() {  /// /////////////////////////////////////
         return 0;
     }
 
     @Override
     public void modificarDireccionVivienda(String nuevaDireccion) {
-
+        this.direccionVivienda = nuevaDireccion;
     }
 
     @Override
     public String verDireccion() {
-        return "";
+        return direccionVivienda;
     }
 
     @Override
     public List<Tarea> verTareas() {
-        return List.of();
+        return this.tareas;
     }
 
     @Override
-    public Tarea seleccionarTarea(Long idTarea) {
+    public Tarea seleccionarTarea(int idTarea) {
+        for (Tarea tarea : tareas){
+            if(tarea.verIdTarea() == idTarea){
+                return tarea;
+            }
+        }
         return null;
     }
 
     @Override
-    public void modificarTarea(Tarea tarea) {
+    public void modificarTarea(int idTarea, Tarea tarea) {
+        Tarea t = seleccionarTarea(idTarea);
+        t.modificarTitulo(tarea.verTitulo());
+        t.modificarDescripcion(tarea.verDescripcion());
+        t.modificarCantidadDiasFinalizacion(tarea.VerCantidadDiasFinalizacion());
+    }
+
+    @Override
+    public void eliminarTarea(int idTarea) { /// ////////////////////////////////////////
+        Tarea tarea = seleccionarTarea(idTarea);
 
     }
 
     @Override
-    public void eliminarTarea(Tarea tarea) {
-
+    public void actualizarFechaRealFinalizacion(String fecha) {
+        this.fechaEstimadaFinProyecto = fecha;
     }
 
     @Override
-    public void actualizarFechaRealFinalización(Date fecha) {
-
-    }
-
-    @Override
-    public Date verFechaRealFinalización() {
-        return null;
+    public String verFechaRealFinalizacion() {
+        return this.fechaEstimadaFinProyecto;
     }
 
     @Override
     public boolean estaFinalizado() {
-        return false;
-    }
-
-    @Override
-    public List<Empleado> empleadosConRetraso() {
-        return List.of();
+        return this.finalizado;
     }
 }

@@ -15,31 +15,31 @@ public class Cliente implements Icliente{
 
     @Override
     public void modificarNombre(String nombre) {
-
+        this.nombre = nombre;
     }
 
     @Override
     public String verNombre() {
-        return "";
+        return this.nombre;
     }
 
     @Override
     public void modificarTelefono(String telefono) {
-
+        this.telefono = telefono;
     }
 
     @Override
     public String verTelefono() {
-        return "";
+        return this.telefono;
     }
 
     @Override
     public void modificarEmail(String email) {
-
+        this.email = email;
     }
 
     @Override
     public String verEmail() {
-        return "";
+        return this.email;
     }
 }

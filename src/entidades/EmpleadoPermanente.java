@@ -4,8 +4,11 @@ public class EmpleadoPermanente extends Empleado implements IempleadoPermanente{
     private double valorDiaTrabajo;
     private String categoria;
     private double adicional;
+    private int contadorLegajo;
 
+    //El legajo de empleadosPermanentes debe comenzar en 200
     public EmpleadoPermanente(String nombre, double valorDiaTrabajo, String categoria){
+        this.legajo += this.contadorLegajo+1;
         this.nombre = nombre;
         this.valorDiaTrabajo = valorDiaTrabajo;
         this.categoria = categoria;

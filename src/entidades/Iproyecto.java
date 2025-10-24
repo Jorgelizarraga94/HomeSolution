@@ -10,11 +10,10 @@ public interface Iproyecto {
     void modificarDireccionVivienda(String nuevaDireccion);
     String verDireccion();
     List<Tarea> verTareas();
-    Tarea seleccionarTarea(Long idTarea);
-    void modificarTarea(Tarea tarea);
-    void eliminarTarea(Tarea tarea);
-    void actualizarFechaRealFinalización(Date fecha);
-    Date verFechaRealFinalización();
+    Tarea seleccionarTarea(int idTarea);
+    void modificarTarea(int idTarea, Tarea tarea);
+    void eliminarTarea(int idTarea);
+    void actualizarFechaRealFinalizacion(String fecha);
+    String verFechaRealFinalizacion();
     boolean estaFinalizado();
-    List<Empleado> empleadosConRetraso();
 }

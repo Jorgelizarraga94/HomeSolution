@@ -9,56 +9,46 @@ public class Empleado implements Iempleado{
 
     @Override
     public boolean estaDisponible() {
-        return false;
+        return this.disponible;
     }
 
     @Override
     public boolean modificarDisponible(boolean disponibilidad) {
-        return false;
+        return this.disponible = disponibilidad;
     }
 
     @Override
     public String mostrarNombre() {
-        return "";
+        return this.nombre;
     }
 
     @Override
     public void modificarNombre(String nombre) {
-
+        this.nombre = nombre;
     }
 
     @Override
-    public Long mostrarLegajo() {
-        return 0L;
-    }
-
-    @Override
-    public Double calcularCostoHora() {
-        return 0.0;
-    }
-
-    @Override
-    public void asignarCostoHora(Integer costoHoraNuevo) {
-
+    public int mostrarLegajo() {
+        return this.legajo;
     }
 
     @Override
     public boolean estaRetrasado() {
-        return false;
+        return this.contadorRetrasos>0;
     }
 
     @Override
     public void retrasarTarea() {
-
+        this.retrasoEnTarea = true;
     }
 
     @Override
     public int mostrarCantidadRetrasos() {
-        return 0;
+        return this.contadorRetrasos;
     }
 
     @Override
     public void aumentarRetrasos() {
-
+        this.contadorRetrasos++;
     }
 }

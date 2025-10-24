@@ -5,9 +5,7 @@ public interface Iempleado {
     boolean modificarDisponible(boolean disponibilidad);
     String mostrarNombre();
     void modificarNombre(String nombre);
-    Long mostrarLegajo();
-    Double calcularCostoHora();
-    void asignarCostoHora(Integer costoHoraNuevo);
+    int mostrarLegajo();
     boolean estaRetrasado();
     void retrasarTarea();
     int mostrarCantidadRetrasos();

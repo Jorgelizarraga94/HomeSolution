@@ -12,12 +12,12 @@ public class Tarea implements ITarea{
     private boolean finalizada;
 
     // Inicializa tarea sin empleado asignado
-    public Tarea(String titulo, String descripcion, double cantidadDiasFinalizacion) {
+    public Tarea(String titulo, String descripcion, double cantidadDiasFinalizacion, int costo) {
         this.idTarea = contadorId+1;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.cantidadDiasFinalizacion = cantidadDiasFinalizacion;
-        this.costo = 0;
+        this.costo = costo;
         this.tiempoFinalizacionHoras = 0.0;
         this.empleado = null;
         this.finalizada = false;
@@ -25,71 +25,76 @@ public class Tarea implements ITarea{
 
     @Override
     public void AsignarEmpleado(Empleado empleado) {
-
+        this.empleado = empleado;
     }
 
     @Override
-    public void registrarRetrasoTarea(int horas) {
+    public void registrarRetrasoTarea(int horas) { /// /////////////////////////
 
     }
 
     @Override
     public String verTitulo() {
-        return "";
+        return this.titulo;
+    }
+
+    @Override
+    public int verIdTarea() {
+        return this.idTarea;
     }
 
     @Override
     public void modificarTitulo(String nuevoTitulo) {
-
+        this.titulo = nuevoTitulo;
     }
 
     @Override
     public String verDescripcion() {
-        return "";
+        return this.descripcion;
     }
 
     @Override
     public void modificarDescripcion(String nuevaDescripcion) {
-
+        this.descripcion = nuevaDescripcion;
     }
 
     @Override
-    public int VerCantidadDiasFinalización() {
-        return 0;
+    public double VerCantidadDiasFinalizacion() {
+        return this.cantidadDiasFinalizacion;
     }
 
     @Override
-    public void modificarCantidadDiasFinalizacion(int dias) {
-
+    public void modificarCantidadDiasFinalizacion(double dias) { //sumamos o restamos?
+        this.cantidadDiasFinalizacion += dias;
     }
 
     @Override
-    public String VerEmpleado() {
-        return "";
+    public Empleado VerEmpleado() {
+        return this.empleado;
     }
 
     @Override
-    public Double verTiempoFinalizaciónHoras() {
-        return 0.0;
+    public Double verTiempoFinalizacionHoras() {
+        return this.tiempoFinalizacionHoras;
     }
 
     @Override
     public void RetrasarTarea(int horas) {
-
+        this.tiempoFinalizacionHoras += horas;
     }
 
     @Override
-    public Double calcularCosto() {
+    public Double calcularCosto() { /// ///////////////////
         return 0.0;
     }
 
     @Override
-    public Double verCosto() {
-        return 0.0;
+    public int verCosto() {
+        return this.costo;
     }
 
     @Override
     public void finalizarTarea() {
-
+        this.finalizada = true;
     }
 }
