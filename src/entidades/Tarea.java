@@ -1,15 +1,15 @@
 package entidades;
 
 public class Tarea implements ITarea{
-    Long idTarea;
-    Long contadorId;
-    String titulo;
-    String descripcion;
-    double cantidadDiasFinalizacion;
-    int costo;
-    double tiempoFinalizacionHoras;
-    Empleado empleado;
-    boolean finalizada;
+    private Long idTarea;
+    private Long contadorId;
+    private String titulo;
+    private String descripcion;
+    private double cantidadDiasFinalizacion;
+    private int costo;
+    private Double tiempoFinalizacionHoras;
+    private Empleado empleado;
+    private boolean finalizada;
 
     // Inicializa tarea sin empleado asignado
     public Tarea(String titulo, String descripcion, double cantidadDiasFinalizacion) {

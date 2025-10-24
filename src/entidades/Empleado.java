@@ -1,11 +1,11 @@
 package entidades;
 
 public class Empleado implements Iempleado{
-    String nombre;
-    Long legajo;
-    boolean disponible;
-    boolean retrasoEnTarea;
-    int contadorRetrasos;
+    public String nombre;
+    public Long legajo;
+    private boolean disponible;
+    private boolean retrasoEnTarea;
+    private int contadorRetrasos;
 
     @Override
     public boolean estaDisponible() {

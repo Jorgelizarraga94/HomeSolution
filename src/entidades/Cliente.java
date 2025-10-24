@@ -1,9 +1,9 @@
 package entidades;
 
 public class Cliente implements Icliente{
-    String nombre;
-    String telefono;
-    String email;
+    private String nombre;
+    private String telefono;
+    private String email;
 
     // Constructor con validaciones
     public Cliente(String nombre, String telefono, String email) {

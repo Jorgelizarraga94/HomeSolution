@@ -1,9 +1,9 @@
 package entidades;
 
 public class EmpleadoPermanente extends Empleado implements IempleadoPermanente{
-    double valorDiaTrabajo;
-    String categoria;
-    double adicional;
+    private double valorDiaTrabajo;
+    private String categoria;
+    private double adicional;
 
     public EmpleadoPermanente(String nombre, double valorDiaTrabajo, String categoria){
         this.nombre = nombre;

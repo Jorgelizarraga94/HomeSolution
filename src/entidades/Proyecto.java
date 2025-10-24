@@ -5,17 +5,17 @@ import java.util.Date;
 import java.util.List;
 
 public class Proyecto implements Iproyecto{
-    Long idProyecto;
-    Long contadorIdProyecto;
-    String direccionVivienda;
-    Date fechaInicioProyecto;
-    Date fechaEstimadaFinProyecto;
-    boolean finalizado;
-    List<Tarea> tareas;
-    Cliente cliente;
+    private Long idProyecto;
+    private Long contadorIdProyecto;
+    private String direccionVivienda;
+    private String fechaInicioProyecto;
+    private String fechaEstimadaFinProyecto;
+    private boolean finalizado;
+    private List<Tarea> tareas;
+    private Cliente cliente;
 
     // Inicializar campos y estado inicial
-    public Proyecto(String[] cliente, String [] titulos, String [] descripcion, Double [] duracion, String direccionVivienda, Date fechaInicioProyecto, Date fechaEstimadaFinProyecto) {
+    public Proyecto(String[] cliente, String [] titulos, String [] descripcion, double [] duracion, String direccionVivienda, String fechaInicioProyecto, String fechaEstimadaFinProyecto) {
         this.idProyecto = contadorIdProyecto+1;
         this.cliente = new Cliente(cliente[0], cliente[1], cliente[2]);
         this.direccionVivienda = direccionVivienda;

@@ -25,7 +25,8 @@ public class HomeSolution implements IHomeSolution{
 
     @Override
     public void registrarProyecto(String[] titulos, String[] descripcion, double[] dias, String domicilio, String[] cliente, String inicio, String fin) throws IllegalArgumentException {
-
+        Proyecto proyecto = new Proyecto(cliente,titulos,descripcion,dias,domicilio, inicio, fin);
+        this.proyectos.add(proyecto);
     }
 
     @Override
