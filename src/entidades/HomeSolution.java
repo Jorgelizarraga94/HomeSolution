@@ -13,12 +13,14 @@ public class HomeSolution implements IHomeSolution{
     }
     @Override
     public void registrarEmpleado(String nombre, double valor) throws IllegalArgumentException {
-
+        Empleado empleado = new EmpleadoContratado(nombre,valor);
+        this.empleados.add(empleado);
     }
 
     @Override
     public void registrarEmpleado(String nombre, double valor, String categoria) throws IllegalArgumentException {
-
+        Empleado empleado = new EmpleadoPermanente(nombre, valor, categoria);
+        this.empleados.add(empleado);
     }
 
     @Override

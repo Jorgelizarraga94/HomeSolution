@@ -5,6 +5,12 @@ public class EmpleadoPermanente extends Empleado implements IempleadoPermanente{
     String categoria;
     double adicional;
 
+    public EmpleadoPermanente(String nombre, double valorDiaTrabajo, String categoria){
+        this.nombre = nombre;
+        this.valorDiaTrabajo = valorDiaTrabajo;
+        this.categoria = categoria;
+        adicional = 0;
+    }
     @Override
     public double calcularAdicional() {
         return 0;
