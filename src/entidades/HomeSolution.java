@@ -6,6 +6,7 @@ import java.util.List;
 public class HomeSolution implements IHomeSolution{
     private HashSet<Empleado> empleados;
     private HashSet<Proyecto> proyectos;
+    private Empleado empleadoConMenorRetraso = null;
 
     public HomeSolution(){
         this.empleados = new HashSet<>();
@@ -41,7 +42,7 @@ public class HomeSolution implements IHomeSolution{
         for (Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
                 if(proyecto.verEstado().equals(Estado.finalizado)){
-                    throw new Exception("Proyecto finalizado");
+                    throw new Exception("el proyecto se encuentra finalizado");
                 }
                 proyecto.cambiarEstado(Estado.activo);
                 tareas = proyecto.verTareas();
@@ -77,24 +78,49 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public void asignarResponsableMenosRetraso(Integer numero, String titulo) throws Exception {
         List<Tarea> tareas = new ArrayList<>();
-        Empleado e = new Empleado();
-        for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
+        Empleado empleadoConMenorRetraso = null;
+        boolean proyectoEncontrado = false;
+
+        for (Proyecto proyecto : proyectos) {
+            if (proyecto.verId() == numero) {
+                proyectoEncontrado = true;
+                if (proyecto.verEstado().equals(Estado.finalizado)) {
+                    throw new Exception("El proyecto se encuentra finalizado");
+                }
                 tareas = proyecto.verTareas();
             }
         }
-        for (Empleado empleado : empleados){
-            if(empleado.mostrarCantidadRetrasos()<1){
-                e = empleado;
+
+        if (!proyectoEncontrado) {
+            throw new Exception("Proyecto no encontrado");
+        }
+
+        for (Empleado empleado : empleados) {
+            if (empleado.estaDisponible()) {
+                if (empleadoConMenorRetraso == null || empleado.mostrarCantidadRetrasos() < empleadoConMenorRetraso.mostrarCantidadRetrasos()) {
+                    empleadoConMenorRetraso = empleado;
+                }
             }
         }
-        for (Tarea tarea : tareas){
-            if(tarea.verTitulo().equals(titulo)){
-                tarea.asignarEmpleado(e);
-                System.out.println("asignar responsable menos retraso" +" "+e.mostrarNombre());
+
+        if (empleadoConMenorRetraso == null) {
+            throw new Exception("No se encuentra empleado disponible");
+        }
+
+        for (Tarea tarea : tareas) {
+            if (tarea.verTitulo().equals(titulo)) {
+                if (tarea.verEmpleado() != null) {
+                    throw new Exception("La tarea ya tiene un empleado asignado");
+                }
+
+                tarea.asignarEmpleado(empleadoConMenorRetraso);
+                empleadoConMenorRetraso.modificarDisponible(false);
+                System.out.println("Responsable con menor retraso asignado: " + empleadoConMenorRetraso.mostrarNombre());
+                break;
             }
         }
     }
+
 
     @Override
     public void registrarRetrasoEnTarea(Integer numero, String titulo, double cantidadDias) throws IllegalArgumentException {
