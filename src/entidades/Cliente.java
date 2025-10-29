@@ -42,4 +42,13 @@ public class Cliente implements Icliente{
     public String verEmail() {
         return this.email;
     }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "nombre='" + nombre + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

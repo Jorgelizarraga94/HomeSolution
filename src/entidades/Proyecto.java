@@ -6,38 +6,46 @@ import java.util.List;
 
 public class Proyecto implements Iproyecto{
     private int idProyecto;
-    private int contadorIdProyecto;
+    private static int contadorIdProyecto=1;
     private String direccionVivienda;
     private String fechaInicioProyecto;
     private String fechaEstimadaFinProyecto;
+    private String estado;
     private boolean finalizado;
     private List<Tarea> tareas;
     private Cliente cliente;
 
     // Inicializar campos y estado inicial
     public Proyecto(String[] cliente, String [] titulos, String [] descripcion, double [] duracion, String direccionVivienda, String fechaInicioProyecto, String fechaEstimadaFinProyecto) {
-        this.idProyecto = contadorIdProyecto+1;
+        this.idProyecto = contadorIdProyecto++;
         this.cliente = new Cliente(cliente[0], cliente[1], cliente[2]);
         this.direccionVivienda = direccionVivienda;
         this.tareas = new ArrayList<>();
         for(int i=0 ; i<titulos.length; i++){
-            Tarea tarea = new Tarea(titulos[i],descripcion[i],duracion[i],0);
+            Tarea tarea = new Tarea(titulos[i],descripcion[i],duracion[i]);
             this.tareas.add(tarea);
         }
         this.fechaInicioProyecto = fechaInicioProyecto;
         this.fechaEstimadaFinProyecto = fechaEstimadaFinProyecto;
+        this.estado = Estado.pendiente;
         this.finalizado = false;
     }
 
     @Override
-    public void agregarTarea(String titulo, String descripcion, Integer cantidadDiasFinalizacion, Integer costo) {
-        Tarea tarea = new Tarea(titulo, descripcion, cantidadDiasFinalizacion, costo);
+    public int verId() {
+        return this.idProyecto;
+    }
+
+    @Override
+    public void agregarTarea(String titulo, String descripcion, double cantidadDiasFinalizacion) {
+        Tarea tarea = new Tarea(titulo, descripcion, cantidadDiasFinalizacion);
         this.tareas.add(tarea);
     }
 
     @Override
     public void actualizarFinalizado() {
         this.finalizado = true;
+        this.estado = Estado.finalizado;
     }
 
     @Override
@@ -61,9 +69,14 @@ public class Proyecto implements Iproyecto{
     }
 
     @Override
-    public Tarea seleccionarTarea(int idTarea) {
+    public String verEstado() {
+        return this.estado;
+    }
+
+    @Override
+    public Tarea seleccionarTarea(String titulo) {
         for (Tarea tarea : tareas){
-            if(tarea.verIdTarea() == idTarea){
+            if(tarea.verTitulo().equals(titulo)){
                 return tarea;
             }
         }
@@ -71,16 +84,16 @@ public class Proyecto implements Iproyecto{
     }
 
     @Override
-    public void modificarTarea(int idTarea, Tarea tarea) {
-        Tarea t = seleccionarTarea(idTarea);
-        t.modificarTitulo(tarea.verTitulo());
-        t.modificarDescripcion(tarea.verDescripcion());
-        t.modificarCantidadDiasFinalizacion(tarea.VerCantidadDiasFinalizacion());
+    public void modificarTarea(String tarea, Tarea tareaNueva) {
+        Tarea t = seleccionarTarea(tarea);
+        t.modificarTitulo(t.verTitulo());
+        t.modificarDescripcion(t.verDescripcion());
+        t.modificarCantidadDiasFinalizacion(t.VerCantidadDiasFinalizacion());
     }
 
     @Override
-    public void eliminarTarea(int idTarea) { /// ////////////////////////////////////////
-        Tarea tarea = seleccionarTarea(idTarea);
+    public void eliminarTarea(String titulo) { /// ////////////////////////////////////////
+        Tarea tarea = seleccionarTarea(titulo);
 
     }
 
@@ -97,5 +110,23 @@ public class Proyecto implements Iproyecto{
     @Override
     public boolean estaFinalizado() {
         return this.finalizado;
+    }
+
+    @Override
+    public void cambiarEstado(String estado) {
+        this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "idProyecto =" + idProyecto + '\'' +
+                ", direccionVivienda = " + direccionVivienda + '\'' +
+                ", fechaInicioProyecto = " + fechaInicioProyecto + '\'' +
+                ", fechaEstimadaFinProyecto = " + fechaEstimadaFinProyecto + '\'' +
+                ", estado= " + estado + '\'' +
+                ", finalizado =" + finalizado + '\'' +
+                ", tareas =" + tareas + '\'' +
+                ", cliente =" +  cliente;
     }
 }

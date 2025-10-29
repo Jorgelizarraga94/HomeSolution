@@ -1,5 +1,5 @@
 package entidades;
-
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -11,62 +11,176 @@ public class HomeSolution implements IHomeSolution{
         this.empleados = new HashSet<>();
         this.proyectos = new HashSet<>();
     }
+
+    //Registra empleado contratado / utilizamos sobreEscritura
     @Override
     public void registrarEmpleado(String nombre, double valor) throws IllegalArgumentException {
         Empleado empleado = new EmpleadoContratado(nombre,valor);
         this.empleados.add(empleado);
+        System.out.println("Empleado contratado registrado");
     }
-
+    //Registra empleado permanenete // utilizamos sobreEscritura
     @Override
     public void registrarEmpleado(String nombre, double valor, String categoria) throws IllegalArgumentException {
         Empleado empleado = new EmpleadoPermanente(nombre, valor, categoria);
         this.empleados.add(empleado);
+        System.out.println("Empleado Permanente registrado");
     }
-
+    //Registra el proyecto y lo agrega a la lista
     @Override
     public void registrarProyecto(String[] titulos, String[] descripcion, double[] dias, String domicilio, String[] cliente, String inicio, String fin) throws IllegalArgumentException {
         Proyecto proyecto = new Proyecto(cliente,titulos,descripcion,dias,domicilio, inicio, fin);
         this.proyectos.add(proyecto);
+        System.out.println("proyecto registrado exitosamente");
     }
 
     @Override
     public void asignarResponsableEnTarea(Integer numero, String titulo) throws Exception {
-
+        List<Tarea> tareas = new ArrayList<>();
+        Empleado e = new Empleado();
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                proyecto.cambiarEstado(Estado.activo);
+                tareas = proyecto.verTareas();
+            }
+        }
+        for (Empleado empleado : empleados){
+            if(empleado.estaDisponible()){
+                e = empleado;
+            }
+        }
+        for (Tarea tarea : tareas){
+            if(tarea.verTitulo().equals(titulo)){
+                tarea.asignarEmpleado(e);
+                e.modificarDisponible(false);
+                System.out.println("asignar responsable" +" "+e.mostrarNombre());
+            }
+        }
     }
 
     @Override
     public void asignarResponsableMenosRetraso(Integer numero, String titulo) throws Exception {
-
+        List<Tarea> tareas = new ArrayList<>();
+        Empleado e = new Empleado();
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                tareas = proyecto.verTareas();
+            }
+        }
+        for (Empleado empleado : empleados){
+            if(empleado.mostrarCantidadRetrasos()<1){
+                e = empleado;
+            }
+        }
+        for (Tarea tarea : tareas){
+            if(tarea.verTitulo().equals(titulo)){
+                tarea.asignarEmpleado(e);
+                System.out.println("asignar responsable menos retraso" +" "+e.mostrarNombre());
+            }
+        }
     }
 
     @Override
     public void registrarRetrasoEnTarea(Integer numero, String titulo, double cantidadDias) throws IllegalArgumentException {
-
+        List<Tarea> tareas = new ArrayList<>();
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                tareas = proyecto.verTareas();
+            }
+        }
+        for (Tarea tarea : tareas){
+            if(tarea.verTitulo().equals(titulo)){
+                tarea.modificarCantidadDiasFinalizacion(cantidadDias);
+                tarea.verEmpleado().aumentarRetrasos();
+            }
+        }
     }
 
-    @Override
+    @Override // faltan cosas
     public void agregarTareaEnProyecto(Integer numero, String titulo, String descripcion, double dias) throws IllegalArgumentException {
-
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                proyecto.agregarTarea(titulo, descripcion, dias);
+            }
+        }
     }
 
     @Override
     public void finalizarTarea(Integer numero, String titulo) throws Exception {
-
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                Tarea tarea = proyecto.seleccionarTarea(titulo);
+                tarea.finalizarTarea();
+            }
+        }
     }
 
     @Override
     public void finalizarProyecto(Integer numero, String fin) throws IllegalArgumentException {
-
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                proyecto.actualizarFinalizado();
+                proyecto.actualizarFechaRealFinalizacion(fin);
+            }
+        }
     }
 
     @Override
     public void reasignarEmpleadoEnProyecto(Integer numero, Integer legajo, String titulo) throws Exception {
-
+        List<Tarea> tareas = new ArrayList<>();
+        //Recorremos la lista de proyectos buscando que el id del proyecto sea igual al numero del parametro
+        //si lo encontramos guardamos la lista de tareas
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                tareas = proyecto.verTareas();
+            }
+        }
+        /*recorremos la lista de tareas del proyecto en busqueda de encontrar el titulo pasado por parametro
+        si lo encontramos asignamos un empleado disponible a la tarea y le sacamos el disponible
+         */
+        for (Tarea tarea : tareas){
+            if(tarea.verTitulo().equals(titulo)){
+                for (Empleado e : empleados){
+                    if(e.estaDisponible()){
+                        tarea.asignarEmpleado(e);
+                        e.modificarDisponible(false);
+                    }
+                }
+            }
+        }
+        /*Recorremos la lista de empleados buscando el legajo del empleado anterior para luego ponerlo como disponible*/
+        for (Empleado empleado : empleados){
+            if(empleado.mostrarLegajo() == legajo){
+                empleado.modificarDisponible(true);
+            }
+        }
     }
 
     @Override
     public void reasignarEmpleadoConMenosRetraso(Integer numero, String titulo) throws Exception {
-
+        List<Tarea> tareas = new ArrayList<>();
+        //Recorremos la lista de proyectos buscando que el id del proyecto sea igual al numero del parametro
+        //si lo encontramos guardamos la lista de tareas
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                tareas = proyecto.verTareas();
+            }
+        }
+        /*recorremos la lista de tareas del proyecto en busqueda de encontrar el titulo pasado por parametro
+        si lo encontramos asignamos un empleado disponible a la tarea y le sacamos el disponible
+         */
+        for (Tarea tarea : tareas){
+            if(tarea.verTitulo().equals(titulo)){
+                Empleado empleado = tarea.verEmpleado();
+                empleado.modificarDisponible(true);
+                for (Empleado e : empleados){
+                    if(e.mostrarCantidadRetrasos()<2 && e.estaDisponible()) {
+                        tarea.asignarEmpleado(e);
+                        e.modificarDisponible(false);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -76,66 +190,155 @@ public class HomeSolution implements IHomeSolution{
 
     @Override
     public List<Tupla<Integer, String>> proyectosFinalizados() {
-        return List.of();
+        List<Tupla<Integer, String>> listaTupla = new ArrayList<>();
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verEstado().equals(Estado.finalizado)){
+                listaTupla.add(new Tupla<Integer, String>(proyecto.verId(), proyecto.verDireccion()));
+            }
+        }
+        return listaTupla;
     }
 
     @Override
     public List<Tupla<Integer, String>> proyectosPendientes() {
-        return List.of();
+        List<Tupla<Integer,String>> listaTupla = new ArrayList<>();
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verEstado().equals(Estado.pendiente)){
+                listaTupla.add(new Tupla<Integer, String>(proyecto.verId(),proyecto.verDireccion()));
+            }
+        }
+        return listaTupla;
     }
 
     @Override
     public List<Tupla<Integer, String>> proyectosActivos() {
-        return List.of();
+        List<Tupla<Integer, String>> listaTupla = new ArrayList<>();
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verEstado().equals(Estado.activo)){
+                listaTupla.add(new Tupla<Integer, String>(proyecto.verId(), proyecto.verDireccion()));
+            }
+        }
+        return listaTupla;
     }
 
     @Override
     public Object[] empleadosNoAsignados() {
-        return new Object[0];
+        List<Object> lista = new ArrayList<>();
+        for(Empleado empleado : empleados){
+            if(empleado.estaDisponible()){
+                lista.add(empleado);
+            }
+        }
+        return lista.toArray();
     }
 
     @Override
     public boolean estaFinalizado(Integer numero) {
+        for(Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero && proyecto.verEstado().equals(Estado.finalizado)){
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public int consultarCantidadRetrasosEmpleado(Integer legajo) {
-        return 0;
+        System.out.println("consultarCantidadRetrasoEmpleado");
+        for (Empleado empleado: empleados){
+            if(empleado.mostrarLegajo() == legajo){
+                return empleado.mostrarCantidadRetrasos();
+            }
+        }
+        return 5;
     }
 
     @Override
     public List<Tupla<Integer, String>> empleadosAsignadosAProyecto(Integer numero) {
-        return List.of();
+        List<Tupla<Integer, String>> empleados = new ArrayList<>();
+
+        for (Proyecto proyecto : proyectos) {
+            if (proyecto.verId() == numero) { // Filtramos solo el proyecto indicado
+                List<Tarea> tareas = proyecto.verTareas();
+                for (Tarea tarea : tareas) {
+                    Empleado empleado = tarea.verEmpleado();
+                    if (empleado != null) { // Comprobamos que la tarea tenga empleado
+                        empleados.add(new Tupla<>(empleado.mostrarLegajo(), empleado.mostrarNombre()));
+                    }
+                }
+            }
+        }
+        return empleados;
     }
+
 
     @Override
     public Object[] tareasProyectoNoAsignadas(Integer numero) {
-        return new Object[0];
+        List<Object> listaTareas = new ArrayList<>();
+        List<Tarea> tareas = new ArrayList<>();
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                 tareas = proyecto.verTareas();
+            }
+        }
+        for (Tarea tarea : tareas){
+            if(tarea.verEmpleado() == null){
+                listaTareas.add(tarea);
+            }
+        }
+        return listaTareas.toArray();
     }
 
     @Override
     public Object[] tareasDeUnProyecto(Integer numero) {
-        return new Object[0];
+        List<Tarea> tareas = new ArrayList<>();
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                tareas = proyecto.verTareas();
+            }
+        }
+        List<Object> listaTareas = new ArrayList<>(tareas);
+        return listaTareas.toArray();
     }
 
     @Override
     public String consultarDomicilioProyecto(Integer numero) {
+        for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                return proyecto.verDireccion();
+            }
+        }
         return "";
     }
 
     @Override
     public boolean tieneRestrasos(String legajo) {
+        for(Empleado empleado : empleados){
+            if(empleado.mostrarCantidadRetrasos()>0){
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public List<Tupla<Integer, String>> empleados() {
-        return List.of();
+        List<Tupla<Integer, String>> listaEmpleados = new ArrayList<>();
+
+        for (Empleado empleado : empleados) {
+            listaEmpleados.add(new Tupla<>(empleado.mostrarLegajo(), empleado.mostrarNombre()));
+        }
+
+        return listaEmpleados;
     }
 
     @Override
     public String consultarProyecto(Integer numero) {
-        return "";
+        for(Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                return proyecto.toString();
+            }
+        }
+        return "Proyecto no encontrado";
     }
 }

@@ -3,9 +3,9 @@ package entidades;
 public class Empleado implements Iempleado{
     public String nombre;
     public int legajo;
-    private boolean disponible;
-    private boolean retrasoEnTarea;
-    private int contadorRetrasos;
+    public boolean disponible;
+    public boolean retrasoEnTarea;
+    public int contadorRetrasos;
 
     @Override
     public boolean estaDisponible() {
@@ -51,4 +51,5 @@ public class Empleado implements Iempleado{
     public void aumentarRetrasos() {
         this.contadorRetrasos++;
     }
+
 }

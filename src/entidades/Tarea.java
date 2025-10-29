@@ -2,7 +2,7 @@ package entidades;
 
 public class Tarea implements ITarea{
     private int idTarea;
-    private int contadorId;
+    private static int contadorId=1;
     private String titulo;
     private String descripcion;
     private double cantidadDiasFinalizacion;
@@ -12,8 +12,8 @@ public class Tarea implements ITarea{
     private boolean finalizada;
 
     // Inicializa tarea sin empleado asignado
-    public Tarea(String titulo, String descripcion, double cantidadDiasFinalizacion, int costo) {
-        this.idTarea = contadorId+1;
+    public Tarea(String titulo, String descripcion, double cantidadDiasFinalizacion) {
+        this.idTarea = contadorId++;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.cantidadDiasFinalizacion = cantidadDiasFinalizacion;
@@ -24,7 +24,7 @@ public class Tarea implements ITarea{
     }
 
     @Override
-    public void AsignarEmpleado(Empleado empleado) {
+    public void asignarEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
 
@@ -69,7 +69,7 @@ public class Tarea implements ITarea{
     }
 
     @Override
-    public Empleado VerEmpleado() {
+    public Empleado verEmpleado() {
         return this.empleado;
     }
 
@@ -79,7 +79,7 @@ public class Tarea implements ITarea{
     }
 
     @Override
-    public void RetrasarTarea(int horas) {
+    public void retrasarTarea(int horas) {
         this.tiempoFinalizacionHoras += horas;
     }
 
@@ -96,5 +96,10 @@ public class Tarea implements ITarea{
     @Override
     public void finalizarTarea() {
         this.finalizada = true;
+    }
+
+    @Override
+    public String toString() {
+        return titulo;
     }
 }
