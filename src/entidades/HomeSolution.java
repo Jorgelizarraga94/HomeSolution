@@ -153,6 +153,8 @@ public class HomeSolution implements IHomeSolution{
             if(proyecto.verId() == numero){
                 Tarea tarea = proyecto.seleccionarTarea(titulo);
                 tarea.finalizarTarea();
+                Empleado empleado = tarea.verEmpleado();
+                empleado.modificarDisponible(true);
             }
         }
     }
