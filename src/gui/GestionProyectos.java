@@ -61,7 +61,7 @@ public class GestionProyectos extends  JPanel{
                     try {
                         panelManager.sistema().asignarResponsableEnTarea(panelManager.consultarSeleccionado(), titulo);
                     } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, "No hay empleados disponibles, el proyecto quedara pendiente");
+                        JOptionPane.showMessageDialog(null, exception.getMessage());
                     }
                 }
                 else{

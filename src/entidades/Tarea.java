@@ -99,6 +99,11 @@ public class Tarea implements ITarea{
     }
 
     @Override
+    public boolean estaFinalizada() {
+        return this.finalizada;
+    }
+
+    @Override
     public String toString() {
         return titulo;
     }

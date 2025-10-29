@@ -37,24 +37,40 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public void asignarResponsableEnTarea(Integer numero, String titulo) throws Exception {
         List<Tarea> tareas = new ArrayList<>();
-        Empleado e = new Empleado();
+        Empleado empleadoDisponible = null;
         for (Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
+                if(proyecto.verEstado().equals(Estado.finalizado)){
+                    throw new Exception("Proyecto finalizado");
+                }
                 proyecto.cambiarEstado(Estado.activo);
                 tareas = proyecto.verTareas();
             }
         }
+
         for (Empleado empleado : empleados){
             if(empleado.estaDisponible()){
-                e = empleado;
+                empleadoDisponible = empleado;
             }
         }
-        for (Tarea tarea : tareas){
-            if(tarea.verTitulo().equals(titulo)){
-                tarea.asignarEmpleado(e);
-                e.modificarDisponible(false);
-                System.out.println("asignar responsable" +" "+e.mostrarNombre());
+
+        if(empleadoDisponible == null){
+            throw new Exception("no hay empleados disponibles");
+        }
+
+        for(Tarea tarea : tareas){
+            if(tarea.verTitulo().equals(titulo) && tarea.estaFinalizada()){
+                throw new Exception("tarea finalizada");
             }
+            if(tarea.verTitulo().equals(titulo) && tarea.verEmpleado() != null){
+                throw new Exception("tarea ya asignada");
+            }
+            if(tarea.verTitulo().equals(titulo) && tarea.verEmpleado() == null){
+                tarea.asignarEmpleado(empleadoDisponible);
+                empleadoDisponible.modificarDisponible(false);
+                System.out.println("asignar responsable" +" "+empleadoDisponible.mostrarNombre());
+            }
+
         }
     }
 

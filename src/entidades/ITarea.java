@@ -16,4 +16,5 @@ public interface ITarea {
     Double calcularCosto();
     int verCosto();
     void finalizarTarea();
+    boolean estaFinalizada();
 }
