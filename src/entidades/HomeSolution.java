@@ -1,4 +1,5 @@
 package entidades;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -164,7 +165,7 @@ public class HomeSolution implements IHomeSolution{
         for (Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
                 proyecto.actualizarFinalizado();
-                proyecto.actualizarFechaRealFinalizacion(fin);
+                proyecto.actualizarFechaRealFinalizacion(LocalDate.parse(fin));
             }
         }
     }
@@ -228,9 +229,10 @@ public class HomeSolution implements IHomeSolution{
     }
 
     @Override
-    public double costoProyecto() {
+    public double costoProyecto(Integer numero) {
         return 0;
     }
+
 
     @Override
     public List<Tupla<Integer, String>> proyectosFinalizados() {
@@ -356,14 +358,15 @@ public class HomeSolution implements IHomeSolution{
     }
 
     @Override
-    public boolean tieneRestrasos(String legajo) {
-        for(Empleado empleado : empleados){
-            if(empleado.mostrarCantidadRetrasos()>0){
+    public boolean tieneRestrasos(Integer legajo) {
+        for (Empleado empleado : empleados){
+            if(empleado.mostrarLegajo() == legajo && empleado.estaRetrasado()){
                 return true;
             }
         }
         return false;
     }
+
 
     @Override
     public List<Tupla<Integer, String>> empleados() {

@@ -1,5 +1,6 @@
 package entidades;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +16,8 @@ public interface Iproyecto {
     Tarea seleccionarTarea(String titulo);
     void modificarTarea(String titulo, Tarea tarea);
     void eliminarTarea(String titulo);
-    void actualizarFechaRealFinalizacion(String fecha);
-    String verFechaRealFinalizacion();
+    void actualizarFechaRealFinalizacion(LocalDate fecha);
+    LocalDate verFechaRealFinalizacion();
     boolean estaFinalizado();
     void cambiarEstado(String estado);
 }

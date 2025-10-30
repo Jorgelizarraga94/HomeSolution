@@ -1,5 +1,6 @@
 package entidades;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,8 +9,8 @@ public class Proyecto implements Iproyecto{
     private int idProyecto;
     private static int contadorIdProyecto=1;
     private String direccionVivienda;
-    private String fechaInicioProyecto;
-    private String fechaEstimadaFinProyecto;
+    private LocalDate fechaInicioProyecto;
+    private LocalDate fechaEstimadaFinProyecto;
     private String estado;
     private boolean finalizado;
     private List<Tarea> tareas;
@@ -25,8 +26,8 @@ public class Proyecto implements Iproyecto{
             Tarea tarea = new Tarea(titulos[i],descripcion[i],duracion[i]);
             this.tareas.add(tarea);
         }
-        this.fechaInicioProyecto = fechaInicioProyecto;
-        this.fechaEstimadaFinProyecto = fechaEstimadaFinProyecto;
+        this.fechaInicioProyecto = LocalDate.parse(fechaInicioProyecto);
+        this.fechaEstimadaFinProyecto = LocalDate.parse(fechaEstimadaFinProyecto);
         this.estado = Estado.pendiente;
         this.finalizado = false;
     }
@@ -98,12 +99,12 @@ public class Proyecto implements Iproyecto{
     }
 
     @Override
-    public void actualizarFechaRealFinalizacion(String fecha) {
+    public void actualizarFechaRealFinalizacion(LocalDate fecha) {
         this.fechaEstimadaFinProyecto = fecha;
     }
 
     @Override
-    public String verFechaRealFinalizacion() {
+    public LocalDate verFechaRealFinalizacion() {
         return this.fechaEstimadaFinProyecto;
     }
 
