@@ -2,7 +2,6 @@ package entidades;
 
 public interface ITarea {
     void asignarEmpleado(Empleado empleado);
-    void registrarRetrasoTarea(int horas);
     String verTitulo();
     int verIdTarea();
     void modificarTitulo(String nuevoTitulo);
@@ -13,8 +12,8 @@ public interface ITarea {
     Empleado verEmpleado();
     Double verTiempoFinalizacionHoras();
     void retrasarTarea(int horas);
-    Double calcularCosto();
-    int verCosto();
+    void calcularCosto();
+    double verCosto();
     void finalizarTarea();
     boolean estaFinalizada();
 }

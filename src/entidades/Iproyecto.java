@@ -8,7 +8,7 @@ public interface Iproyecto {
     int verId();
     void agregarTarea(String titulo, String descripcion, double cantidadDiasFinalizacion);
     void actualizarFinalizado();
-    double CalculoCostoFinal();
+    double calculoCostoFinal();
     void modificarDireccionVivienda(String nuevaDireccion);
     String verDireccion();
     List<Tarea> verTareas();

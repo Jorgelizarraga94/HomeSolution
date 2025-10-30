@@ -12,13 +12,9 @@ public class EmpleadoPermanente extends Empleado implements IempleadoPermanente{
         this.nombre = nombre;
         this.valorDiaTrabajo = valorDiaTrabajo;
         this.categoria = categoria;
-        adicional = 0;
+        this.adicional = 0.02;
         this.disponible = true;
         this.contadorRetrasos = 0;
-    }
-    @Override
-    public double calcularAdicional() {
-        return 0;
     }
 
     @Override
@@ -27,18 +23,18 @@ public class EmpleadoPermanente extends Empleado implements IempleadoPermanente{
     }
 
     @Override
-    public int verValorDia() {
-        return 0;
+    public double verValorDia() {
+        return this.valorDiaTrabajo;
     }
 
     @Override
     public String verCategoria() {
-        return "";
+        return this.categoria;
     }
 
     @Override
     public double verAdicional() {
-        return 0;
+        return this.adicional;
     }
 
     @Override

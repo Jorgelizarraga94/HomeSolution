@@ -6,7 +6,7 @@ public class Tarea implements ITarea{
     private String titulo;
     private String descripcion;
     private double cantidadDiasFinalizacion;
-    private int costo;
+    private double costo;
     private Double tiempoFinalizacionHoras;
     private Empleado empleado;
     private boolean finalizada;
@@ -26,12 +26,9 @@ public class Tarea implements ITarea{
     @Override
     public void asignarEmpleado(Empleado empleado) {
         this.empleado = empleado;
+        calcularCosto();
     }
 
-    @Override
-    public void registrarRetrasoTarea(int horas) { /// /////////////////////////
-
-    }
 
     @Override
     public String verTitulo() {
@@ -84,12 +81,27 @@ public class Tarea implements ITarea{
     }
 
     @Override
-    public Double calcularCosto() { /// ///////////////////
-        return 0.0;
+    public void calcularCosto() { /// //////////////////////////////////////////
+        double costoFinal = 0;
+        if(empleado instanceof EmpleadoContratado){
+            System.out.println("entra");
+            double costoPorDia = ((EmpleadoContratado) empleado).verCostoHora() * 8;
+            costoFinal = this.cantidadDiasFinalizacion * costoPorDia;
+        }
+        if(empleado instanceof EmpleadoPermanente){
+            System.out.println("empleado permanente");
+            costoFinal = this.cantidadDiasFinalizacion * ((EmpleadoPermanente) empleado).verValorDia();
+            if(!empleado.estaRetrasado()){
+                System.out.println("no esta retrasado");
+                costoFinal += costoFinal * ((EmpleadoPermanente) empleado).verAdicional();
+                System.out.println(costoFinal);
+            }
+        }
+        this.costo = costoFinal;
     }
 
     @Override
-    public int verCosto() {
+    public double verCosto() {
         return this.costo;
     }
 

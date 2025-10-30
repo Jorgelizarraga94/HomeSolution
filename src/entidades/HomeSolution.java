@@ -126,9 +126,11 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public void registrarRetrasoEnTarea(Integer numero, String titulo, double cantidadDias) throws IllegalArgumentException {
         List<Tarea> tareas = new ArrayList<>();
+        Proyecto p = null;
         for (Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
                 tareas = proyecto.verTareas();
+                p = proyecto;
             }
         }
         for (Tarea tarea : tareas){
@@ -136,6 +138,11 @@ public class HomeSolution implements IHomeSolution{
                 tarea.modificarCantidadDiasFinalizacion(cantidadDias);
                 tarea.verEmpleado().aumentarRetrasos();
             }
+        }
+        if(p != null){
+            LocalDate nuevaFechaFinalizacion = p.verFechaRealFinalizacion();
+            nuevaFechaFinalizacion = nuevaFechaFinalizacion.plusDays((long) cantidadDias);
+            p.actualizarFechaRealFinalizacion(nuevaFechaFinalizacion);
         }
     }
 
@@ -230,7 +237,13 @@ public class HomeSolution implements IHomeSolution{
 
     @Override
     public double costoProyecto(Integer numero) {
-        return 0;
+        double costoProyecto = 0;
+        for(Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+                costoProyecto = proyecto.calculoCostoFinal();
+            }
+        }
+        return costoProyecto;
     }
 
 

@@ -10,7 +10,9 @@ public class Proyecto implements Iproyecto{
     private static int contadorIdProyecto=1;
     private String direccionVivienda;
     private LocalDate fechaInicioProyecto;
-    private LocalDate fechaEstimadaFinProyecto;
+    private LocalDate fechaEstimadaDeFinalizacion;
+    private LocalDate fechaRealDeFinalizacion;
+    private double costoProyecto;
     private String estado;
     private boolean finalizado;
     private List<Tarea> tareas;
@@ -27,7 +29,9 @@ public class Proyecto implements Iproyecto{
             this.tareas.add(tarea);
         }
         this.fechaInicioProyecto = LocalDate.parse(fechaInicioProyecto);
-        this.fechaEstimadaFinProyecto = LocalDate.parse(fechaEstimadaFinProyecto);
+        this.fechaEstimadaDeFinalizacion = LocalDate.parse(fechaEstimadaFinProyecto);
+        this.fechaRealDeFinalizacion = LocalDate.parse(fechaEstimadaFinProyecto);
+        this.costoProyecto = 0;
         this.estado = Estado.pendiente;
         this.finalizado = false;
     }
@@ -50,8 +54,12 @@ public class Proyecto implements Iproyecto{
     }
 
     @Override
-    public double CalculoCostoFinal() {  /// /////////////////////////////////////
-        return 0;
+    public double calculoCostoFinal() {  /// /////////////////////////////////////
+        double costoFinal=0;
+        for (Tarea tarea : tareas){
+            costoFinal += tarea.verCosto();
+        }
+        return costoFinal;
     }
 
     @Override
@@ -95,17 +103,16 @@ public class Proyecto implements Iproyecto{
     @Override
     public void eliminarTarea(String titulo) { /// ////////////////////////////////////////
         Tarea tarea = seleccionarTarea(titulo);
-
     }
 
     @Override
     public void actualizarFechaRealFinalizacion(LocalDate fecha) {
-        this.fechaEstimadaFinProyecto = fecha;
+        this.fechaRealDeFinalizacion = fecha;
     }
 
     @Override
     public LocalDate verFechaRealFinalizacion() {
-        return this.fechaEstimadaFinProyecto;
+        return this.fechaRealDeFinalizacion;
     }
 
     @Override
@@ -124,7 +131,8 @@ public class Proyecto implements Iproyecto{
                 "idProyecto =" + idProyecto + '\'' +
                 ", direccionVivienda = " + direccionVivienda + '\'' +
                 ", fechaInicioProyecto = " + fechaInicioProyecto + '\'' +
-                ", fechaEstimadaFinProyecto = " + fechaEstimadaFinProyecto + '\'' +
+                ", fechaEstimadaFinProyecto = " + fechaEstimadaDeFinalizacion + '\'' +
+                ", fechaRealFinProyecto = " + fechaRealDeFinalizacion + '\'' +
                 ", estado= " + estado + '\'' +
                 ", finalizado =" + finalizado + '\'' +
                 ", tareas =" + tareas + '\'' +
