@@ -185,6 +185,9 @@ public class HomeSolution implements IHomeSolution{
     public void finalizarTarea(Integer numero, String titulo) throws Exception {
         for (Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
+                if(proyecto.seleccionarTarea(titulo).estaFinalizada()){
+                    throw new Exception("la tarea se encuentra finalizada");
+                }
                 Tarea tarea = proyecto.seleccionarTarea(titulo);
                 tarea.finalizarTarea();
                 Empleado empleado = tarea.verEmpleado();
@@ -197,6 +200,9 @@ public class HomeSolution implements IHomeSolution{
     public void finalizarProyecto(Integer numero, String fin) throws IllegalArgumentException {
         for (Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
+                if(proyecto.verFechaDeInicio().isAfter(LocalDate.parse(fin))){
+                    throw new IllegalArgumentException("la fecha de finalización no puede ser anterior a la de inicio");
+                }
                 proyecto.actualizarFinalizado();
                 proyecto.actualizarFechaRealFinalizacion(LocalDate.parse(fin));
             }

@@ -148,7 +148,7 @@ public class GestionProyectos extends  JPanel{
                     }
                     catch (Exception ex)
                     {
-                        JOptionPane.showMessageDialog(null,"La tarea ya estaba finalizada");
+                        JOptionPane.showMessageDialog(null,ex.getMessage());
                     }
                 }
                 else{
@@ -210,7 +210,7 @@ public class GestionProyectos extends  JPanel{
                     panelManager.sistema().finalizarProyecto(panelManager.consultarSeleccionado(), fecha);
                 }
                 catch(IllegalArgumentException exception){
-                    JOptionPane.showMessageDialog(null,"Los valores no son validos");
+                    JOptionPane.showMessageDialog(null,exception.getMessage());
                 }
             }
         });

@@ -124,7 +124,7 @@ public interface IHomeSolution {
     /**
      * Marca un proyecto completo como finalizado.
      * @param numero Número o código del proyecto.
-     * @param fin Fecha de inicio de finalización (formato YYYY-MM-DD).
+     * @param fin Fecha de finalización (formato YYYY-MM-DD).
      * @throws IllegalArgumentException si la fecha es incorrecta( anterior a la fecha de inicio)
      */
     public void finalizarProyecto(Integer numero, String fin) throws IllegalArgumentException;

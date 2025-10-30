@@ -126,6 +126,11 @@ public class Proyecto implements Iproyecto{
         return this.fechaEstimadaDeFinalizacion;
     }
 
+    @Override
+    public LocalDate verFechaDeInicio() {
+        return fechaInicioProyecto;
+    }
+
 
     @Override
     public boolean estaFinalizado() {

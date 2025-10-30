@@ -20,6 +20,7 @@ public interface Iproyecto {
     void actualizarFechaEstimadaFinalizacion(LocalDate fecha);
     LocalDate verFechaRealFinalizacion();
     LocalDate verFechaEstimadaFinalizacion();
+    LocalDate verFechaDeInicio();
     boolean estaFinalizado();
     void cambiarEstado(String estado);
 }
