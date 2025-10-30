@@ -153,8 +153,20 @@ public class HomeSolution implements IHomeSolution{
 
     @Override // faltan cosas
     public void agregarTareaEnProyecto(Integer numero, String titulo, String descripcion, double dias) throws IllegalArgumentException {
+        if(dias < 1){
+            throw new IllegalArgumentException("Los dias deben ser mayores a 0");
+        }
+        if(titulo.matches(".*\\d.*")){
+            throw new IllegalArgumentException("no se admite numeros");
+        }
+        if(descripcion.matches(".*\\d.*")){
+            throw new IllegalArgumentException("no se admite numeros");
+        }
         for (Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
+                if(proyecto.estaFinalizado()){
+                    throw new IllegalArgumentException("El proyecto se encuentra finalizado");
+                }
                 proyecto.agregarTarea(titulo, descripcion, dias);
                 //Actualización de fecha de finalización
                 LocalDate nuevaFechaFinalizacion = proyecto.verFechaRealFinalizacion();
@@ -166,6 +178,7 @@ public class HomeSolution implements IHomeSolution{
                 proyecto.actualizarFechaEstimadaFinalizacion(nuevaFechaFinalizacion);
             }
         }
+
     }
 
     @Override

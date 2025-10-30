@@ -189,7 +189,7 @@ public class GestionProyectos extends  JPanel{
                     tareas.addItem(titulo);
                 }
                 catch(IllegalArgumentException | NullPointerException exception){
-                    JOptionPane.showMessageDialog(null,"Los valores no son validos");
+                    JOptionPane.showMessageDialog(null,exception.getMessage());
                 }
             }
         });
