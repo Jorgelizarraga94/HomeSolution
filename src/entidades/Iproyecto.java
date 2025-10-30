@@ -17,7 +17,9 @@ public interface Iproyecto {
     void modificarTarea(String titulo, Tarea tarea);
     void eliminarTarea(String titulo);
     void actualizarFechaRealFinalizacion(LocalDate fecha);
+    void actualizarFechaEstimadaFinalizacion(LocalDate fecha);
     LocalDate verFechaRealFinalizacion();
+    LocalDate verFechaEstimadaFinalizacion();
     boolean estaFinalizado();
     void cambiarEstado(String estado);
 }

@@ -140,6 +140,7 @@ public class HomeSolution implements IHomeSolution{
             }
         }
         if(p != null){
+            //Actualización de fecha de finalización
             LocalDate nuevaFechaFinalizacion = p.verFechaRealFinalizacion();
             nuevaFechaFinalizacion = nuevaFechaFinalizacion.plusDays((long) cantidadDias);
             p.actualizarFechaRealFinalizacion(nuevaFechaFinalizacion);
@@ -151,6 +152,14 @@ public class HomeSolution implements IHomeSolution{
         for (Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
                 proyecto.agregarTarea(titulo, descripcion, dias);
+                //Actualización de fecha de finalización
+                LocalDate nuevaFechaFinalizacion = proyecto.verFechaRealFinalizacion();
+                nuevaFechaFinalizacion = nuevaFechaFinalizacion.plusDays((long) dias);
+                proyecto.actualizarFechaRealFinalizacion(nuevaFechaFinalizacion);
+                //Actualización de fecha Estimada
+                LocalDate nuevaFechaEstimadaFinalizacion = proyecto.verFechaEstimadaFinalizacion();
+                nuevaFechaFinalizacion = nuevaFechaEstimadaFinalizacion.plusDays((long) dias);
+                proyecto.actualizarFechaEstimadaFinalizacion(nuevaFechaFinalizacion);
             }
         }
     }

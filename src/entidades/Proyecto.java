@@ -111,9 +111,21 @@ public class Proyecto implements Iproyecto{
     }
 
     @Override
+    public void actualizarFechaEstimadaFinalizacion(LocalDate fecha) {
+        this.fechaEstimadaDeFinalizacion = fecha;
+    }
+
+
+    @Override
     public LocalDate verFechaRealFinalizacion() {
         return this.fechaRealDeFinalizacion;
     }
+
+    @Override
+    public LocalDate verFechaEstimadaFinalizacion() {
+        return this.fechaEstimadaDeFinalizacion;
+    }
+
 
     @Override
     public boolean estaFinalizado() {
