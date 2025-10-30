@@ -167,7 +167,7 @@ public class GestionProyectos extends  JPanel{
                         panelManager.sistema().registrarRetrasoEnTarea(panelManager.consultarSeleccionado(), titulo, dias);
                     }
                     catch (IllegalArgumentException | NullPointerException exception){
-                        JOptionPane.showMessageDialog(null, "Los valores ingresados no son validos");
+                        JOptionPane.showMessageDialog(null, exception.getMessage());
                     }
                 }
                 else{

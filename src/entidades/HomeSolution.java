@@ -127,6 +127,10 @@ public class HomeSolution implements IHomeSolution{
     public void registrarRetrasoEnTarea(Integer numero, String titulo, double cantidadDias) throws IllegalArgumentException {
         List<Tarea> tareas = new ArrayList<>();
         Proyecto p = null;
+        if(cantidadDias < 1){
+            throw new IllegalArgumentException("La cantidad de dias debe ser mayor a 0");
+        }
+
         for (Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
                 tareas = proyecto.verTareas();
