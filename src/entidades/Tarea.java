@@ -108,6 +108,7 @@ public class Tarea implements ITarea{
     @Override
     public void finalizarTarea() {
         this.finalizada = true;
+        this.empleado.modificarDisponible(true);
     }
 
     @Override

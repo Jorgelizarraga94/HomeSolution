@@ -190,8 +190,6 @@ public class HomeSolution implements IHomeSolution{
                 }
                 Tarea tarea = proyecto.seleccionarTarea(titulo);
                 tarea.finalizarTarea();
-                Empleado empleado = tarea.verEmpleado();
-                empleado.modificarDisponible(true);
             }
         }
     }
@@ -208,6 +206,9 @@ public class HomeSolution implements IHomeSolution{
             }
         }
     }
+    // ============================================================
+    // REASIGNACIÓN DE EMPLEADOS
+    // ============================================================
 
     @Override
     public void reasignarEmpleadoEnProyecto(Integer numero, Integer legajo, String titulo) throws Exception {
@@ -224,10 +225,17 @@ public class HomeSolution implements IHomeSolution{
          */
         for (Tarea tarea : tareas){
             if(tarea.verTitulo().equals(titulo)){
+                if(tarea.verEmpleado() == null){
+                    throw new Exception("No se encuentra empleado asignado anteriormente");
+                }
                 for (Empleado e : empleados){
                     if(e.estaDisponible()){
                         tarea.asignarEmpleado(e);
                         e.modificarDisponible(false);
+                    }
+                    //solucionar esto
+                    if(!e.estaDisponible()){
+                        throw new Exception("No se encuentran empleados disponibles");
                     }
                 }
             }
@@ -243,26 +251,41 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public void reasignarEmpleadoConMenosRetraso(Integer numero, String titulo) throws Exception {
         List<Tarea> tareas = new ArrayList<>();
-        //Recorremos la lista de proyectos buscando que el id del proyecto sea igual al numero del parametro
-        //si lo encontramos guardamos la lista de tareas
-        for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
+        Empleado empleadoConMenorRetraso = null;
+        boolean proyectoEncontrado = false;
+
+        for (Proyecto proyecto : proyectos) {
+            if (proyecto.verId() == numero) {
+                proyectoEncontrado = true;
+                if (proyecto.verEstado().equals(Estado.finalizado)) {
+                    throw new Exception("El proyecto se encuentra finalizado");
+                }
                 tareas = proyecto.verTareas();
             }
         }
-        /*recorremos la lista de tareas del proyecto en busqueda de encontrar el titulo pasado por parametro
-        si lo encontramos asignamos un empleado disponible a la tarea y le sacamos el disponible
-         */
-        for (Tarea tarea : tareas){
-            if(tarea.verTitulo().equals(titulo)){
-                Empleado empleado = tarea.verEmpleado();
-                empleado.modificarDisponible(true);
-                for (Empleado e : empleados){
-                    if(e.mostrarCantidadRetrasos()<2 && e.estaDisponible()) {
-                        tarea.asignarEmpleado(e);
-                        e.modificarDisponible(false);
-                    }
+
+        if (!proyectoEncontrado) {
+            throw new Exception("Proyecto no encontrado");
+        }
+
+        for (Empleado empleado : empleados) {
+            if (empleado.estaDisponible()) {
+                if (empleadoConMenorRetraso == null || empleado.mostrarCantidadRetrasos() < empleadoConMenorRetraso.mostrarCantidadRetrasos()) {
+                    empleadoConMenorRetraso = empleado;
                 }
+            }
+        }
+
+        if (empleadoConMenorRetraso == null) {
+            throw new Exception("No se encuentra empleado disponible");
+        }
+
+        for (Tarea tarea : tareas) {
+            if (tarea.verTitulo().equals(titulo)) {
+                tarea.asignarEmpleado(empleadoConMenorRetraso);
+                empleadoConMenorRetraso.modificarDisponible(false);
+                System.out.println("Responsable con menor retraso asignado: " + empleadoConMenorRetraso.mostrarNombre());
+                break;
             }
         }
     }

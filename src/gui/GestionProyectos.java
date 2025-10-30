@@ -113,7 +113,7 @@ public class GestionProyectos extends  JPanel{
                         panelManager.sistema().reasignarEmpleadoEnProyecto(panelManager.consultarSeleccionado(), legajo, titulo);
                         }
                         catch (Exception exception ){
-                            JOptionPane.showMessageDialog(null, "No hay empleado asignado anterioremente");
+                            JOptionPane.showMessageDialog(null, exception.getMessage());
                         }
                     }
                 }
@@ -130,7 +130,7 @@ public class GestionProyectos extends  JPanel{
                     try {
                         panelManager.sistema().reasignarEmpleadoConMenosRetraso(panelManager.consultarSeleccionado(), titulo);
                     } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, "No hay empleados disponibles, el proyecto quedara pendiente");
+                        JOptionPane.showMessageDialog(null, exception.getMessage());
                     }
                 }
                 else{
