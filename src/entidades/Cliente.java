@@ -45,10 +45,8 @@ public class Cliente implements Icliente{
 
     @Override
     public String toString() {
-        return "Cliente{" +
-                "nombre='" + nombre + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return  "{ nombre ="  + nombre + '\n' +
+                "telefono = " + telefono + '\n' +
+                "email = " + email + '\n' + '}';
     }
 }

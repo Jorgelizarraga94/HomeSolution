@@ -145,14 +145,14 @@ public class Proyecto implements Iproyecto{
     @Override
     public String toString() {
         return
-                "idProyecto =" + idProyecto + '\'' +
-                ", direccionVivienda = " + direccionVivienda + '\'' +
-                ", fechaInicioProyecto = " + fechaInicioProyecto + '\'' +
-                ", fechaEstimadaFinProyecto = " + fechaEstimadaDeFinalizacion + '\'' +
-                ", fechaRealFinProyecto = " + fechaRealDeFinalizacion + '\'' +
-                ", estado= " + estado + '\'' +
-                ", finalizado =" + finalizado + '\'' +
-                ", tareas =" + tareas + '\'' +
-                ", cliente =" +  cliente;
+                "idProyecto =" + idProyecto + '\n' +
+                "direccionVivienda = " + direccionVivienda + '\n' +
+                "fechaInicioProyecto = " + fechaInicioProyecto + '\n' +
+                "fechaEstimadaFinProyecto = " + fechaEstimadaDeFinalizacion + '\n' +
+                "fechaRealFinProyecto = " + fechaRealDeFinalizacion + '\n' +
+                "estado= " + estado + '\n' +
+                "finalizado =" + finalizado + '\n' +
+                "tareas =" + tareas + '\n' +
+                "cliente =" +  cliente;
     }
 }

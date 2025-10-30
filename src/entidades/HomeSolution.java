@@ -14,6 +14,9 @@ public class HomeSolution implements IHomeSolution{
         this.proyectos = new HashSet<>();
     }
 
+    // ============================================================
+    // REGISTRO DE EMPLEADOS
+    // ============================================================
     //Registra empleado contratado / utilizamos sobreEscritura
     @Override
     public void registrarEmpleado(String nombre, double valor) throws IllegalArgumentException {
@@ -28,6 +31,11 @@ public class HomeSolution implements IHomeSolution{
         this.empleados.add(empleado);
         System.out.println("Empleado Permanente registrado");
     }
+
+    // ============================================================
+    // REGISTRO Y GESTIÓN DE PROYECTOS
+    // ============================================================
+
     //Registra el proyecto y lo agrega a la lista
     @Override
     public void registrarProyecto(String[] titulos, String[] descripcion, double[] dias, String domicilio, String[] cliente, String inicio, String fin) throws IllegalArgumentException {
@@ -35,6 +43,10 @@ public class HomeSolution implements IHomeSolution{
         this.proyectos.add(proyecto);
         System.out.println("proyecto registrado exitosamente");
     }
+
+    // ============================================================
+    // ASIGNACIÓN Y GESTIÓN DE TAREAS
+    // ============================================================
 
     @Override
     public void asignarResponsableEnTarea(Integer numero, String titulo) throws Exception {
@@ -233,10 +245,10 @@ public class HomeSolution implements IHomeSolution{
                         tarea.asignarEmpleado(e);
                         e.modificarDisponible(false);
                     }
-                    //solucionar esto
+                    /*//solucionar esto
                     if(!e.estaDisponible()){
                         throw new Exception("No se encuentran empleados disponibles");
-                    }
+                    }*/
                 }
             }
         }
@@ -289,6 +301,10 @@ public class HomeSolution implements IHomeSolution{
             }
         }
     }
+
+    // ============================================================
+    // CONSULTAS Y REPORTES
+    // ============================================================
 
     @Override
     public double costoProyecto(Integer numero) {
@@ -385,6 +401,9 @@ public class HomeSolution implements IHomeSolution{
         return empleados;
     }
 
+// ============================================================
+    // NUEVOS REQUERIMIENTOS
+    // ============================================================
 
     @Override
     public Object[] tareasProyectoNoAsignadas(Integer numero) {
