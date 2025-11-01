@@ -1,4 +1,5 @@
 package entidades;
+import java.security.PrivilegedActionException;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -238,19 +239,12 @@ public class HomeSolution implements IHomeSolution{
                     throw new IllegalArgumentException("la fecha de finalización no puede ser anterior a la de inicio");
                 }
                 List<Tarea> tareas = proyecto.verTareas();
-
-                boolean todasFinalizadas = true;
-                for(Tarea tarea : tareas){
-                    todasFinalizadas = todasFinalizadas && tarea.estaFinalizada();
+                for(Tarea tarea : tareas) {
+                    if(tarea.verEmpleado() != null) {
+                        tarea.verEmpleado().modificarDisponible(true);
+                    }
                 }
-
-                if(todasFinalizadas){
-                    proyecto.actualizarFinalizado();
-                    proyecto.actualizarFechaRealFinalizacion(LocalDate.parse(fin));
-                }
-                if(!todasFinalizadas){
-                    throw new IllegalArgumentException("no estan todas las tareas finalizadas");
-                }
+                proyecto.actualizarFinalizado();
             }
         }
     }
@@ -445,9 +439,16 @@ public class HomeSolution implements IHomeSolution{
     public Object[] tareasProyectoNoAsignadas(Integer numero) {
         List<Object> listaTareas = new ArrayList<>();
         List<Tarea> tareas = new ArrayList<>();
+
         for (Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
                  tareas = proyecto.verTareas();
+            }
+            if (proyecto == null) {
+                throw new IllegalArgumentException("Proyecto inexistente");
+            }
+            if (proyecto.estaFinalizado()) {
+                throw new IllegalArgumentException("Proyecto finalizado");
             }
         }
         for (Tarea tarea : tareas){
