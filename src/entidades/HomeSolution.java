@@ -176,6 +176,7 @@ public class HomeSolution implements IHomeSolution{
             if(tarea.verTitulo().equals(titulo)){
                 tarea.modificarCantidadDiasFinalizacion(cantidadDias);
                 tarea.verEmpleado().aumentarRetrasos();
+                tarea.retrasarTarea();
             }
         }
         if(p != null){
@@ -339,11 +340,25 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public double costoProyecto(Integer numero) {
         double costoProyecto = 0;
+        List<Tarea> tareas = new ArrayList<>();
         for(Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
-                costoProyecto = proyecto.calculoCostoFinal();
+                costoProyecto += proyecto.calculoCostoFinal();
+                tareas = proyecto.verTareas();
             }
         }
+        boolean tieneRetraso = true;
+        for (Tarea tarea : tareas){
+            tieneRetraso = tieneRetraso && tarea.tieneRetrasos();
+        }
+
+        if(tieneRetraso){
+            costoProyecto = costoProyecto * 1.35;
+        }
+        else{
+            costoProyecto = costoProyecto * 1.25;
+        }
+
         return costoProyecto;
     }
 

@@ -12,8 +12,10 @@ public interface ITarea {
     Empleado verEmpleado();
     Double verTiempoFinalizacionHoras();
     void retrasarTarea(int horas);
+    void retrasarTarea();
     void calcularCosto();
     double verCosto();
     void finalizarTarea();
+    boolean tieneRetrasos();
     boolean estaFinalizada();
 }
