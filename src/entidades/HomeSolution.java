@@ -53,6 +53,9 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public void registrarProyecto(String[] titulos, String[] descripcion, double[] dias, String domicilio, String[] cliente, String inicio, String fin) throws IllegalArgumentException {
         Proyecto proyecto = new Proyecto(cliente,titulos,descripcion,dias,domicilio, inicio, fin);
+        if(LocalDate.parse(inicio).isAfter(LocalDate.parse(fin))){
+            throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin");
+        }
         this.proyectos.add(proyecto);
         System.out.println("proyecto registrado exitosamente");
     }
