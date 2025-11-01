@@ -34,6 +34,12 @@ public class HomeSolution implements IHomeSolution{
         if(valor < 0){
             throw new IllegalArgumentException("El valor no puede ser negativo");
         }
+
+        List<String> categoriasValidas = List.of("INICIAL", "TECNICO", "EXPERTO");
+        if (!categoriasValidas.contains(categoria)) {
+            throw new IllegalArgumentException("Ingrese una categoria valida");
+        }
+
         Empleado empleado = new EmpleadoPermanente(nombre, valor, categoria);
         this.empleados.add(empleado);
         System.out.println("Empleado Permanente registrado");
