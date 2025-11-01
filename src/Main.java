@@ -1,6 +1,7 @@
 import entidades.Empleado;
 import entidades.EmpleadoPermanente;
 import entidades.HomeSolution;
+import entidades.Tupla;
 import gui.PanelManager;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -17,5 +18,8 @@ public class Main {
         homeSolution.registrarEmpleado("Luis",80000, "EXPERTO");
         homeSolution.registrarEmpleado("Julieta",15000);
         PanelManager panelManager=new PanelManager(homeSolution);
+        for (Tupla<Integer, String> t : homeSolution.proyectosPendientes()) {
+            System.out.println("Proyecto ID: " + t.getValor1() + " - Dirección: " + t.getValor2());
+        }
         }
     }

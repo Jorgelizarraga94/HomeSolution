@@ -1,4 +1,5 @@
 package entidades;
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +21,9 @@ public class HomeSolution implements IHomeSolution{
     //Registra empleado contratado / utilizamos sobreEscritura
     @Override
     public void registrarEmpleado(String nombre, double valor) throws IllegalArgumentException {
+        if(valor < 0){
+            throw new IllegalArgumentException("El valor no puede ser negativo");
+        }
         Empleado empleado = new EmpleadoContratado(nombre,valor);
         this.empleados.add(empleado);
         System.out.println("Empleado contratado registrado");
@@ -27,6 +31,9 @@ public class HomeSolution implements IHomeSolution{
     //Registra empleado permanenete // utilizamos sobreEscritura
     @Override
     public void registrarEmpleado(String nombre, double valor, String categoria) throws IllegalArgumentException {
+        if(valor < 0){
+            throw new IllegalArgumentException("El valor no puede ser negativo");
+        }
         Empleado empleado = new EmpleadoPermanente(nombre, valor, categoria);
         this.empleados.add(empleado);
         System.out.println("Empleado Permanente registrado");
@@ -82,9 +89,15 @@ public class HomeSolution implements IHomeSolution{
             if(tarea.verTitulo().equals(titulo) && tarea.verEmpleado() == null){
                 tarea.asignarEmpleado(empleadoDisponible);
                 empleadoDisponible.modificarDisponible(false);
-                System.out.println("asignar responsable" +" "+empleadoDisponible.mostrarNombre());
+                for (Empleado empleado : empleados){
+                    if(empleado.mostrarLegajo() == empleadoDisponible.mostrarLegajo()){
+                        empleado.modificarDisponible(false);
+                    }
+                }
             }
-
+        }
+        for (Empleado empleado : empleados){
+            System.out.println(empleado.mostrarNombre() + " " + empleado.estaDisponible());
         }
     }
 
@@ -195,6 +208,7 @@ public class HomeSolution implements IHomeSolution{
 
     @Override
     public void finalizarTarea(Integer numero, String titulo) throws Exception {
+        Empleado empleado = null;
         for (Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
                 if(proyecto.seleccionarTarea(titulo).estaFinalizada()){
@@ -202,6 +216,7 @@ public class HomeSolution implements IHomeSolution{
                 }
                 Tarea tarea = proyecto.seleccionarTarea(titulo);
                 tarea.finalizarTarea();
+                System.out.println(tarea.verEmpleado() + "" + tarea.verEmpleado().estaDisponible());
             }
         }
     }
@@ -213,8 +228,20 @@ public class HomeSolution implements IHomeSolution{
                 if(proyecto.verFechaDeInicio().isAfter(LocalDate.parse(fin))){
                     throw new IllegalArgumentException("la fecha de finalización no puede ser anterior a la de inicio");
                 }
-                proyecto.actualizarFinalizado();
-                proyecto.actualizarFechaRealFinalizacion(LocalDate.parse(fin));
+                List<Tarea> tareas = proyecto.verTareas();
+
+                boolean todasFinalizadas = true;
+                for(Tarea tarea : tareas){
+                    todasFinalizadas = todasFinalizadas && tarea.estaFinalizada();
+                }
+
+                if(todasFinalizadas){
+                    proyecto.actualizarFinalizado();
+                    proyecto.actualizarFechaRealFinalizacion(LocalDate.parse(fin));
+                }
+                if(!todasFinalizadas){
+                    throw new IllegalArgumentException("no estan todas las tareas finalizadas");
+                }
             }
         }
     }

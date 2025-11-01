@@ -195,9 +195,9 @@ public class HomeSolutionTest {
     }
     @Test
     public void testEmpleadosLiberadosCorrectamente() throws Exception{
-        Integer numeroProyecto = (homeSolution.proyectosPendientes().get(0)).getValor1();
+        Integer numeroProyecto = homeSolution.proyectosPendientes().get(0).getValor1();
         asignarTareas(numeroProyecto);
-        homeSolution.finalizarProyecto(numeroProyecto,"2025-12-06");
+        homeSolution.finalizarProyecto(numeroProyecto,"2025-12-20");
         assertTrue(homeSolution.empleadosNoAsignados().length==4);
     }
     

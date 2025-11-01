@@ -13,8 +13,8 @@ public class Empleado implements Iempleado{
     }
 
     @Override
-    public boolean modificarDisponible(boolean disponibilidad) {
-        return this.disponible = disponibilidad;
+    public void modificarDisponible(boolean disponibilidad) {
+        this.disponible = disponibilidad;
     }
 
     @Override

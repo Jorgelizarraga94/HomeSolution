@@ -2,7 +2,7 @@ package entidades;
 
 public interface Iempleado {
     boolean estaDisponible();
-    boolean modificarDisponible(boolean disponibilidad);
+    void modificarDisponible(boolean disponibilidad);
     String mostrarNombre();
     void modificarNombre(String nombre);
     int mostrarLegajo();
