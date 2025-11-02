@@ -4,16 +4,17 @@ import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class HomeSolution implements IHomeSolution{
-    private HashSet<Empleado> empleados;
-    private HashSet<Proyecto> proyectos;
+    private LinkedHashSet<Empleado> empleados;
+    private LinkedHashSet<Proyecto> proyectos;
     private Empleado empleadoConMenorRetraso = null;
 
     public HomeSolution(){
-        this.empleados = new HashSet<>();
-        this.proyectos = new HashSet<>();
+        this.empleados = new LinkedHashSet<>();
+        this.proyectos = new LinkedHashSet<>();
     }
 
     // ============================================================
@@ -67,6 +68,7 @@ public class HomeSolution implements IHomeSolution{
 
     @Override
     public void asignarResponsableEnTarea(Integer numero, String titulo) throws Exception {
+        int minLegajo = Integer.MAX_VALUE;
         List<Tarea> tareas = new ArrayList<>();
         Empleado empleadoDisponible = null;
         for (Proyecto proyecto : proyectos){
@@ -80,7 +82,8 @@ public class HomeSolution implements IHomeSolution{
         }
 
         for (Empleado empleado : empleados){
-            if(empleado.estaDisponible()){
+            if(empleado.estaDisponible() && empleado.mostrarLegajo() < minLegajo){
+                minLegajo = empleado.mostrarLegajo();
                 empleadoDisponible = empleado;
             }
         }
@@ -189,9 +192,10 @@ public class HomeSolution implements IHomeSolution{
 
     @Override // faltan cosas
     public void agregarTareaEnProyecto(Integer numero, String titulo, String descripcion, double dias) throws IllegalArgumentException {
-        if(dias < 1){
-            throw new IllegalArgumentException("Los dias deben ser mayores a 0");
+        if (dias != 0.5 && dias < 1) {
+            throw new IllegalArgumentException("La cantidad de días debe ser 0.5 o >= 1");
         }
+
         if(titulo.matches(".*\\d.*")){
             throw new IllegalArgumentException("no se admite numeros");
         }
@@ -239,6 +243,9 @@ public class HomeSolution implements IHomeSolution{
                 if(proyecto.verFechaDeInicio().isAfter(LocalDate.parse(fin))){
                     throw new IllegalArgumentException("la fecha de finalización no puede ser anterior a la de inicio");
                 }
+                /*if(proyecto.verFechaRealFinalizacion().isAfter(LocalDate.parse(fin))){
+                    throw new IllegalArgumentException("La fecha de finalización no puede ser menor a la fecha estipulada de finalización");
+                }*/
                 List<Tarea> tareas = proyecto.verTareas();
                 for(Tarea tarea : tareas) {
                     if(tarea.verEmpleado() != null) {
@@ -343,22 +350,22 @@ public class HomeSolution implements IHomeSolution{
         List<Tarea> tareas = new ArrayList<>();
         for(Proyecto proyecto : proyectos){
             if(proyecto.verId() == numero){
-                costoProyecto += proyecto.calculoCostoFinal();
+                costoProyecto = proyecto.calculoCostoFinal();
                 tareas = proyecto.verTareas();
             }
         }
-        boolean tieneRetraso = true;
+        boolean tieneRetraso = false;
         for (Tarea tarea : tareas){
-            tieneRetraso = tieneRetraso && tarea.tieneRetrasos();
+            tieneRetraso = tieneRetraso || tarea.tieneRetrasos();
         }
 
         if(tieneRetraso){
-            costoProyecto = costoProyecto * 1.35;
-        }
-        else{
             costoProyecto = costoProyecto * 1.25;
         }
-
+        else{
+            costoProyecto = costoProyecto * 1.35;
+        }
+        System.out.println("Costo proyecto = " + costoProyecto);
         return costoProyecto;
     }
 

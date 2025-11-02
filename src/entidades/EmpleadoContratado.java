@@ -2,9 +2,8 @@ package entidades;
 
 public class EmpleadoContratado extends Empleado implements IempleadoContratado{
     private double costoHora;
-    private static int contadorLegajo=100;
 
-    //tenemos que hacer que los legajos de empleadosContratados comienzen a partir del 100
+
     public EmpleadoContratado(String nombre, double costoHora){
         this.nombre = nombre;
         this.legajo = contadorLegajo++;

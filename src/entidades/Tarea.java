@@ -108,16 +108,10 @@ public class Tarea implements ITarea{
             if(this.cantidadDiasFinalizacion == 0.5){
                 cantidadDiasFinalizacion = 1;
             }
-            costoFinal = this.cantidadDiasFinalizacion * (((EmpleadoPermanente) empleado).verValorDia());
-            costoFinal = costoFinal * 1.02;
-
-           /* if(!empleado.estaRetrasado()){
-                System.out.println("no esta retrasado");
-                costoFinal += costoFinal * ((EmpleadoPermanente) empleado).verAdicional();
-                System.out.println(costoFinal);
-            }*/
+            costoFinal = this.cantidadDiasFinalizacion * (((EmpleadoPermanente) empleado).verValorDia()* 1.02);
         }
         this.costo = costoFinal;
+        System.out.println("costo en tarea = " + costo);
     }
 
     @Override

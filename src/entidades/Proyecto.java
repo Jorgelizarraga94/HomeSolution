@@ -59,6 +59,7 @@ public class Proyecto implements Iproyecto{
         for (Tarea tarea : tareas){
             costoFinal += tarea.verCosto();
         }
+        System.out.println("Costo final de proyecto " + costoFinal);
         return costoFinal;
     }
 
@@ -92,18 +93,25 @@ public class Proyecto implements Iproyecto{
         return null;
     }
 
+
     @Override
-    public void modificarTarea(String tarea, Tarea tareaNueva) {
-        Tarea t = seleccionarTarea(tarea);
-        t.modificarTitulo(t.verTitulo());
-        t.modificarDescripcion(t.verDescripcion());
-        t.modificarCantidadDiasFinalizacion(t.VerCantidadDiasFinalizacion());
+    public void modificarTarea(String titulo, Tarea tareaNueva) {
+        Tarea t = seleccionarTarea(titulo);
+        if (t != null && tareaNueva != null) {
+            t.modificarTitulo(tareaNueva.verTitulo());
+            t.modificarDescripcion(tareaNueva.verDescripcion());
+            t.modificarCantidadDiasFinalizacion(tareaNueva.VerCantidadDiasFinalizacion());
+        }
     }
 
     @Override
-    public void eliminarTarea(String titulo) { /// ////////////////////////////////////////
+    public void eliminarTarea(String titulo) {
         Tarea tarea = seleccionarTarea(titulo);
+        if (tarea != null) {
+            tareas.remove(tarea);
+        }
     }
+
 
     @Override
     public void actualizarFechaRealFinalizacion(LocalDate fecha) {
