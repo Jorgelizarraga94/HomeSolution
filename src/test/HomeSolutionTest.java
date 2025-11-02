@@ -229,7 +229,7 @@ public class HomeSolutionTest {
         Object[] emp=homeSolution.empleadosNoAsignados();
         Integer legajo=Integer.parseInt(emp[0].toString());
         homeSolution.reasignarEmpleadoEnProyecto(numeroProyecto,legajo,"Instalacion electrica");
-        double costo=calculoCostoSinRetraso()-80000*2*1*1.02+20000*2;
+        double costo=calculoCostoSinRetraso()-80000*2*1.02*1.35+20000*2*8*1.35;
         homeSolution.finalizarProyecto(numeroProyecto,"2025-12-05");
         assertEquals(costo, homeSolution.costoProyecto(numeroProyecto), 0.001);
     }

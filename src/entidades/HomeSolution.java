@@ -180,6 +180,7 @@ public class HomeSolution implements IHomeSolution{
                 tarea.modificarCantidadDiasFinalizacion(cantidadDias);
                 tarea.verEmpleado().aumentarRetrasos();
                 tarea.retrasarTarea();
+                System.out.println("tiene retraso?????" + tarea.tieneRetrasos());
             }
         }
         if(p != null){
@@ -246,8 +247,12 @@ public class HomeSolution implements IHomeSolution{
                 if(proyecto.verFechaEstimadaFinalizacion().isAfter(LocalDate.parse(fin))){
                     throw new IllegalArgumentException("La fecha de finalización no puede ser menor a la fecha estimada de finalización");
                 }
+
                 List<Tarea> tareas = proyecto.verTareas();
                 for(Tarea tarea : tareas) {
+                    if(proyecto.verFechaEstimadaFinalizacion().isBefore(LocalDate.parse(fin))){
+                        tarea.retrasarTarea();
+                    }
                     if(tarea.verEmpleado() != null) {
                         tarea.verEmpleado().modificarDisponible(true);
                     }
@@ -355,7 +360,7 @@ public class HomeSolution implements IHomeSolution{
                 tareas = proyecto.verTareas();
             }
         }
-        boolean tieneRetraso = false;
+        /*boolean tieneRetraso = false;
         for (Tarea tarea : tareas){
             tieneRetraso = tieneRetraso || tarea.tieneRetrasos();
         }
@@ -366,7 +371,7 @@ public class HomeSolution implements IHomeSolution{
         else{
             costoProyecto = costoProyecto * 1.35;
         }
-        System.out.println("Costo proyecto = " + costoProyecto);
+        System.out.println("Costo proyecto = " + costoProyecto);*/
         return costoProyecto;
     }
 

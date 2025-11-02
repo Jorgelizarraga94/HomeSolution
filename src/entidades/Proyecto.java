@@ -56,10 +56,20 @@ public class Proyecto implements Iproyecto{
     @Override
     public double calculoCostoFinal() {  /// /////////////////////////////////////
         double costoFinal=0;
+        boolean tieneRetraso = false;
         for (Tarea tarea : tareas){
             costoFinal += tarea.verCosto();
+            tieneRetraso = tieneRetraso || tarea.tieneRetrasos();
         }
-        System.out.println("Costo final de proyecto " + costoFinal);
+        System.out.println("alguna tarea tiene retraso? " + tieneRetraso);
+        if(tieneRetraso){
+            costoFinal = costoFinal * 1.25;
+        }
+        else{
+            costoFinal = costoFinal * 1.35;
+        }
+        System.out.println("Costo proyecto = " + costoFinal);
+
         return costoFinal;
     }
 
