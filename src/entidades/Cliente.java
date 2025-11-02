@@ -2,15 +2,15 @@ package entidades;
 
 public class Cliente implements Icliente{
     private String nombre;
-    private String telefono;
     private String email;
+    private String telefono;
 
     // Constructor con validaciones
-    public Cliente(String nombre, String telefono, String email) {
+    public Cliente(String nombre, String email, String telefono) {
         // Validar formato de teléfono y email
         this.nombre = nombre;
-        this.telefono = telefono;
         this.email = email;
+        this.telefono = telefono;
     }
 
     @Override
@@ -45,8 +45,10 @@ public class Cliente implements Icliente{
 
     @Override
     public String toString() {
-        return  "{ nombre ="  + nombre + '\n' +
-                "telefono = " + telefono + '\n' +
-                "email = " + email + '\n' + '}';
+        StringBuilder st = new StringBuilder();
+        st.append("Nombre :").append(nombre).append('\n');
+        st.append("Telefono :").append(telefono).append('\n');
+        st.append("Email :").append(email).append('\n');
+        return st.toString();
     }
 }

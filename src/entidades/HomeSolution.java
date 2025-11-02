@@ -360,18 +360,6 @@ public class HomeSolution implements IHomeSolution{
                 tareas = proyecto.verTareas();
             }
         }
-        /*boolean tieneRetraso = false;
-        for (Tarea tarea : tareas){
-            tieneRetraso = tieneRetraso || tarea.tieneRetrasos();
-        }
-
-        if(tieneRetraso){
-            costoProyecto = costoProyecto * 1.25;
-        }
-        else{
-            costoProyecto = costoProyecto * 1.35;
-        }
-        System.out.println("Costo proyecto = " + costoProyecto);*/
         return costoProyecto;
     }
 

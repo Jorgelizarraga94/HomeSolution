@@ -162,15 +162,35 @@ public class Proyecto implements Iproyecto{
 
     @Override
     public String toString() {
-        return
-                "idProyecto =" + idProyecto + '\n' +
-                "direccionVivienda = " + direccionVivienda + '\n' +
-                "fechaInicioProyecto = " + fechaInicioProyecto + '\n' +
-                "fechaEstimadaFinProyecto = " + fechaEstimadaDeFinalizacion + '\n' +
-                "fechaRealFinProyecto = " + fechaRealDeFinalizacion + '\n' +
-                "estado= " + estado + '\n' +
-                "finalizado =" + finalizado + '\n' +
-                "tareas =" + tareas + '\n' +
-                "cliente =" +  cliente;
+        String fin;
+        String retraso;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("========================================Detalle de Proyecto======================================").append('\n');
+        stringBuilder.append("idProyecto: ").append(idProyecto).append('\n');
+        stringBuilder.append("direccion de la vivienda: ").append(direccionVivienda).append('\n');
+        stringBuilder.append("fecha de inicio de proyecto: ").append(fechaInicioProyecto).append('\n');
+        stringBuilder.append("fecha Estimada de Fin del Proyecto: ").append(fechaEstimadaDeFinalizacion).append('\n');
+        stringBuilder.append("fecha real de finalización: ").append(fechaRealDeFinalizacion).append('\n');
+        stringBuilder.append("estado del proyecto: ").append(estado).append('\n');
+        if(finalizado){
+            fin = "Si";
+        }
+        else{
+            fin = "No";
+        }
+        stringBuilder.append("esta finalizado: ").append(fin).append('\n');
+        stringBuilder.append("costo final: ").append(costoProyecto).append('\n');
+        if(fechaRealDeFinalizacion.isAfter(fechaEstimadaDeFinalizacion)){
+            retraso = "Si";
+        }
+        else{
+            retraso = "No";
+        }
+        stringBuilder.append("Retraso: ").append(retraso).append('\n');
+        stringBuilder.append("========================================Detalle de Cliente======================================").append('\n');
+        stringBuilder.append("cliente: ").append(cliente).append('\n');
+        stringBuilder.append("========================================Detalle de Tarea======================================").append('\n');
+        stringBuilder.append("tareas: ").append(tareas).append('\n');
+        return stringBuilder.toString();
     }
 }

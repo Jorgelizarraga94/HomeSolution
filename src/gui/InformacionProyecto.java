@@ -15,7 +15,7 @@ public class InformacionProyecto extends JDialog {
         super(frame);
         this.numero=numero;
         this.informacion = informacion;
-        setSize(500, 300);
+        setSize(800, 800);
         setLocationRelativeTo(frame);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         crearComponentes();

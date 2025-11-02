@@ -125,7 +125,7 @@ public class FormularioProyecto extends JPanel {
         textDiasTarea=new JTextField(10);
 
         clienteNombre=new JLabel("Nombre cliente");
-        clienteMail=new JLabel("eMail cliente");
+        clienteMail=new JLabel("Email cliente");
         clienteTelefono=new JLabel("Telefono cliente");
         domicilio=new JLabel("Domicilio");
         fechaInicio=new JLabel("Fecha de inicio");
