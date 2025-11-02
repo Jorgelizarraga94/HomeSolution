@@ -243,9 +243,9 @@ public class HomeSolution implements IHomeSolution{
                 if(proyecto.verFechaDeInicio().isAfter(LocalDate.parse(fin))){
                     throw new IllegalArgumentException("la fecha de finalización no puede ser anterior a la de inicio");
                 }
-                /*if(proyecto.verFechaRealFinalizacion().isAfter(LocalDate.parse(fin))){
-                    throw new IllegalArgumentException("La fecha de finalización no puede ser menor a la fecha estipulada de finalización");
-                }*/
+                if(proyecto.verFechaEstimadaFinalizacion().isAfter(LocalDate.parse(fin))){
+                    throw new IllegalArgumentException("La fecha de finalización no puede ser menor a la fecha estimada de finalización");
+                }
                 List<Tarea> tareas = proyecto.verTareas();
                 for(Tarea tarea : tareas) {
                     if(tarea.verEmpleado() != null) {

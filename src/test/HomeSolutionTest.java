@@ -217,9 +217,8 @@ public class HomeSolutionTest {
     @Test
     public void testCalculaCostoConRetrasosCorrectamente() throws Exception{
         Integer numeroProyecto = (homeSolution.proyectosPendientes().get(0)).getValor1();
-        System.out.println(numeroProyecto);
         asignarTareas(numeroProyecto);
-        homeSolution.finalizarProyecto(numeroProyecto,"2025-12-15");
+        homeSolution.finalizarProyecto(numeroProyecto,"2025-12-10");
         assertEquals(calculoCostoConRetraso(), homeSolution.costoProyecto(numeroProyecto), 0.001);
     }
     @Test
@@ -231,7 +230,7 @@ public class HomeSolutionTest {
         Integer legajo=Integer.parseInt(emp[0].toString());
         homeSolution.reasignarEmpleadoEnProyecto(numeroProyecto,legajo,"Instalacion electrica");
         double costo=calculoCostoSinRetraso()-80000*2*1*1.02+20000*2;
-        homeSolution.finalizarProyecto(numeroProyecto,"2025-12-15");
+        homeSolution.finalizarProyecto(numeroProyecto,"2025-12-05");
         assertEquals(costo, homeSolution.costoProyecto(numeroProyecto), 0.001);
     }
 
