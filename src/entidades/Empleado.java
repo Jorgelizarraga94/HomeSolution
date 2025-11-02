@@ -3,7 +3,7 @@ package entidades;
 public class Empleado implements Iempleado{
     public String nombre;
     public int legajo;
-    public static int contadorLegajo=0;
+    public static int contadorLegajo=1;
     public boolean disponible;
     public boolean retrasoEnTarea;
     public int contadorRetrasos;

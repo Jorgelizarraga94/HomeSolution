@@ -262,6 +262,7 @@ public class HomeSolution implements IHomeSolution{
 
     @Override
     public void reasignarEmpleadoEnProyecto(Integer numero, Integer legajo, String titulo) throws Exception {
+        System.out.println("reasignarEmpleadoEnProyectooooooooooooooooooooooooooooooooooooooooo");
         List<Tarea> tareas = new ArrayList<>();
         //Recorremos la lista de proyectos buscando que el id del proyecto sea igual al numero del parametro
         //si lo encontramos guardamos la lista de tareas
@@ -279,7 +280,7 @@ public class HomeSolution implements IHomeSolution{
                     throw new Exception("No se encuentra empleado asignado anteriormente");
                 }
                 for (Empleado e : empleados){
-                    if(e.estaDisponible()){
+                    if(e.estaDisponible() && e.mostrarLegajo() == legajo){
                         tarea.asignarEmpleado(e);
                         e.modificarDisponible(false);
                     }

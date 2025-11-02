@@ -234,8 +234,6 @@ public class HomeSolutionTest {
         assertEquals(costo, homeSolution.costoProyecto(numeroProyecto), 0.001);
     }
 
-
-
     private void asignarTareas(Integer numeroProyecto) throws Exception{
         homeSolution.asignarResponsableEnTarea(numeroProyecto,"Pintar");
         homeSolution.asignarResponsableEnTarea(numeroProyecto,"Instalacion electrica");
