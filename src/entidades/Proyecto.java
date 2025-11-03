@@ -28,7 +28,6 @@ public class Proyecto implements Iproyecto{
         for(int i=0 ; i<titulos.length; i++){
             Tarea tarea = new Tarea(titulos[i],descripcion[i],duracion[i]);
             tareas.put(tarea.verTitulo(), tarea);
-            //this.tareas.add(tarea);
         }
         this.fechaInicioProyecto = LocalDate.parse(fechaInicioProyecto);
         this.fechaEstimadaDeFinalizacion = LocalDate.parse(fechaEstimadaFinProyecto);

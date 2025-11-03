@@ -12,7 +12,7 @@ public class Main {
         String titulos[]={"Pintar","Instacion electrica","Trabajos jardineria","Instalar AA"};
         String descripciones[]={"","","",""};
         double duracion[]={4,2,1,.5};
-        String cliente[]={"Pedro Gomez","pedroGomez@","1165258458"};
+        String cliente[]={"Pedro Gomez","",""};
         homeSolution.registrarProyecto(titulos,descripciones,duracion,"San Martin 1000",cliente,"2025-11-01","2025-11-05");
         homeSolution.registrarEmpleado("Juan",15000);
         homeSolution.registrarEmpleado("Luis",80000, "EXPERTO");

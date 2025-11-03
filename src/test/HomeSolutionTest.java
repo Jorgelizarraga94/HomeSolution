@@ -2,13 +2,9 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 import java.util.List;
-
-import entidades.Proyecto;
 import org.junit.Before;
 import org.junit.Test;
-
 import entidades.HomeSolution;
 import entidades.IHomeSolution;
 import entidades.Tupla;

@@ -1,25 +1,20 @@
 package entidades;
 
 public class Tarea implements ITarea{
-    private int idTarea;
-    private static int contadorId=1;
     private String titulo;
     private String descripcion;
     private double cantidadDiasFinalizacion;
     private double costo;
-    private Double tiempoFinalizacionHoras;
     private Empleado empleado;
     private boolean tieneRetraso;
     private boolean finalizada;
 
     // Inicializa tarea sin empleado asignado
     public Tarea(String titulo, String descripcion, double cantidadDiasFinalizacion) {
-        this.idTarea = contadorId++;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.cantidadDiasFinalizacion = cantidadDiasFinalizacion;
         this.costo = costo;
-        this.tiempoFinalizacionHoras = 0.0;
         this.empleado = null;
         this.tieneRetraso = false;
         this.finalizada = false;
@@ -31,15 +26,9 @@ public class Tarea implements ITarea{
         calcularCosto();
     }
 
-
     @Override
     public String verTitulo() {
         return this.titulo;
-    }
-
-    @Override
-    public int verIdTarea() {
-        return this.idTarea;
     }
 
     @Override
@@ -73,13 +62,7 @@ public class Tarea implements ITarea{
     }
 
     @Override
-    public Double verTiempoFinalizacionHoras() {
-        return this.tiempoFinalizacionHoras;
-    }
-
-    @Override
     public void retrasarTarea(int horas) {
-        this.tiempoFinalizacionHoras += horas;
         this.tieneRetraso = true;
     }
 
