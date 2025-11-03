@@ -104,14 +104,12 @@ public class HomeSolutionTest {
         Integer numeroProyecto = (homeSolution.proyectosPendientes().get(0)).getValor1();
         homeSolution.finalizarProyecto(numeroProyecto, "2025-12-10");
         Object[] tareas= homeSolution.tareasProyectoNoAsignadas(numeroProyecto);
-        System.out.println("TAREAS -> " + tareas.length);
         assertTrue(tareas.length==0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFinalizarProyectoConFechaInvalidaLanzaExcepcion() {
         Integer numeroProyecto = (homeSolution.proyectosPendientes().get(0)).getValor1();
-        System.out.println(numeroProyecto);
         homeSolution.finalizarProyecto(numeroProyecto, "2025-12-04");
     }
 
@@ -122,7 +120,6 @@ public class HomeSolutionTest {
     public void testTotalTareasAsignadas() throws Exception {
         Integer numeroProyecto = (homeSolution.proyectosPendientes().get(0)).getValor1();
         asignarTareas(numeroProyecto);
-        System.out.println("Numero proyecto -> " + numeroProyecto);
         Object[] tareas=homeSolution.tareasProyectoNoAsignadas(numeroProyecto);
         assertTrue(tareas.length==0);
     }
@@ -148,7 +145,6 @@ public class HomeSolutionTest {
         homeSolution.registrarRetrasoEnTarea(numeroProyecto,"Instalacion electrica",2);
         homeSolution.registrarRetrasoEnTarea(numeroProyecto,"Instalar AA",4);
         homeSolution.registrarRetrasoEnTarea(numeroProyecto,"Trabajos jardineria",1);
-        System.out.println(numeroProyecto);
         homeSolution.finalizarProyecto(numeroProyecto,"2025-12-10");
         numeroProyecto = (homeSolution.proyectosPendientes().get(0)).getValor1();
         homeSolution.asignarResponsableMenosRetraso(numeroProyecto,"Pintar");
@@ -206,7 +202,6 @@ public class HomeSolutionTest {
     @Test
     public void testCalculaCostoSinRetrasosCorrectamente() throws Exception{
         Integer numeroProyecto = (homeSolution.proyectosPendientes().get(0)).getValor1();
-        System.out.println(numeroProyecto);
         asignarTareas(numeroProyecto);
         assertEquals(calculoCostoSinRetraso(), homeSolution.costoProyecto(numeroProyecto), 0.001);
     }

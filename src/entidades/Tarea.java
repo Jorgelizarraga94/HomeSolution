@@ -77,7 +77,6 @@ public class Tarea implements ITarea{
         double costoFinal = 0;
         double costoPorDia = 0;
         if(this.empleado instanceof EmpleadoContratado){
-            System.out.println("empleado contratado");
             if(cantidadDiasFinalizacion >= 1){
                 costoPorDia = ((EmpleadoContratado) empleado).verCostoHora() * 8;
             }
@@ -87,7 +86,6 @@ public class Tarea implements ITarea{
             costoFinal = this.cantidadDiasFinalizacion * costoPorDia;
         }
         if(this.empleado instanceof EmpleadoPermanente){
-            System.out.println("empleado permanente");
             if(this.cantidadDiasFinalizacion == 0.5){
                 cantidadDiasFinalizacion = 1;
             }
@@ -95,7 +93,6 @@ public class Tarea implements ITarea{
             costoFinal = costoFinal * 1.02;
         }
         this.costo = costoFinal;
-        System.out.println("costo en tarea = " + costo);
     }
 
     @Override

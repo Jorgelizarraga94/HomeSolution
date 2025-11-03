@@ -46,7 +46,6 @@ public class Proyecto implements Iproyecto{
     public void agregarTarea(String titulo, String descripcion, double cantidadDiasFinalizacion) {
         Tarea tarea = new Tarea(titulo, descripcion, cantidadDiasFinalizacion);
         tareas.put(tarea.verTitulo(), tarea);
-        //this.tareas.add(tarea);
     }
 
     @Override
@@ -56,21 +55,21 @@ public class Proyecto implements Iproyecto{
     }
 
     @Override
-    public double calculoCostoFinal() {  /// /////////////////////////////////////
+    public double calculoCostoFinal() {
         double costoFinal=0;
         boolean tieneRetraso = false;
+
         for (Tarea tarea : tareas.values()){
             costoFinal += tarea.verCosto();
             tieneRetraso = tieneRetraso || tarea.tieneRetrasos();
         }
-        System.out.println("alguna tarea tiene retraso? " + tieneRetraso);
+
         if(tieneRetraso){
             costoFinal = costoFinal * 1.25;
         }
         else{
             costoFinal = costoFinal * 1.35;
         }
-        System.out.println("Costo proyecto = " + costoFinal);
 
         return costoFinal;
     }
@@ -82,7 +81,7 @@ public class Proyecto implements Iproyecto{
 
     @Override
     public String verDireccion() {
-        return direccionVivienda;
+        return this.direccionVivienda;
     }
 
     @Override
@@ -103,7 +102,6 @@ public class Proyecto implements Iproyecto{
         }
         return null;
     }
-
 
     @Override
     public void modificarTarea(String titulo, Tarea tareaNueva) {
