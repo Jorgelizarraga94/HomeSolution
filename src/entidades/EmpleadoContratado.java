@@ -3,7 +3,6 @@ package entidades;
 public class EmpleadoContratado extends Empleado implements IempleadoContratado{
     private double costoHora;
 
-
     public EmpleadoContratado(String nombre, double costoHora){
         this.nombre = nombre;
         this.legajo = contadorLegajo++;

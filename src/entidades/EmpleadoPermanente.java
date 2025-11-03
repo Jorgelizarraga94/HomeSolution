@@ -17,8 +17,8 @@ public class EmpleadoPermanente extends Empleado implements IempleadoPermanente{
     }
 
     @Override
-    public void modificarValorDia() {
-
+    public void modificarValorDia(double nuevoValor) {
+        this.valorDiaTrabajo = nuevoValor;
     }
 
     @Override

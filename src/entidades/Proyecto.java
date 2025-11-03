@@ -3,6 +3,7 @@ package entidades;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Proyecto implements Iproyecto{
@@ -15,7 +16,7 @@ public class Proyecto implements Iproyecto{
     private double costoProyecto;
     private String estado;
     private boolean finalizado;
-    private List<Tarea> tareas;
+    private LinkedHashMap<String, Tarea> tareas;
     private Cliente cliente;
 
     // Inicializar campos y estado inicial
@@ -23,10 +24,11 @@ public class Proyecto implements Iproyecto{
         this.idProyecto = contadorIdProyecto++;
         this.cliente = new Cliente(cliente[0], cliente[1], cliente[2]);
         this.direccionVivienda = direccionVivienda;
-        this.tareas = new ArrayList<>();
+        this.tareas = new LinkedHashMap<>();
         for(int i=0 ; i<titulos.length; i++){
             Tarea tarea = new Tarea(titulos[i],descripcion[i],duracion[i]);
-            this.tareas.add(tarea);
+            tareas.put(tarea.verTitulo(), tarea);
+            //this.tareas.add(tarea);
         }
         this.fechaInicioProyecto = LocalDate.parse(fechaInicioProyecto);
         this.fechaEstimadaDeFinalizacion = LocalDate.parse(fechaEstimadaFinProyecto);
@@ -44,7 +46,8 @@ public class Proyecto implements Iproyecto{
     @Override
     public void agregarTarea(String titulo, String descripcion, double cantidadDiasFinalizacion) {
         Tarea tarea = new Tarea(titulo, descripcion, cantidadDiasFinalizacion);
-        this.tareas.add(tarea);
+        tareas.put(tarea.verTitulo(), tarea);
+        //this.tareas.add(tarea);
     }
 
     @Override
@@ -57,7 +60,7 @@ public class Proyecto implements Iproyecto{
     public double calculoCostoFinal() {  /// /////////////////////////////////////
         double costoFinal=0;
         boolean tieneRetraso = false;
-        for (Tarea tarea : tareas){
+        for (Tarea tarea : tareas.values()){
             costoFinal += tarea.verCosto();
             tieneRetraso = tieneRetraso || tarea.tieneRetrasos();
         }
@@ -85,7 +88,7 @@ public class Proyecto implements Iproyecto{
 
     @Override
     public List<Tarea> verTareas() {
-        return this.tareas;
+        return new ArrayList<>(this.tareas.values());
     }
 
     @Override
@@ -95,11 +98,15 @@ public class Proyecto implements Iproyecto{
 
     @Override
     public Tarea seleccionarTarea(String titulo) {
-        for (Tarea tarea : tareas){
-            if(tarea.verTitulo().equals(titulo)){
-                return tarea;
-            }
+        Tarea tarea = tareas.get(titulo);
+        if(tarea != null){
+            return tarea;
         }
+        /*for (Tarea tarea : tareas){
+            if(tarea.verTitulo().equals(titulo)){
+
+            }
+        }*/
         return null;
     }
 

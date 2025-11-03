@@ -1,20 +1,14 @@
 package entidades;
-import java.security.PrivilegedActionException;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 public class HomeSolution implements IHomeSolution{
-    private LinkedHashSet<Empleado> empleados;
-    private LinkedHashSet<Proyecto> proyectos;
-    private Empleado empleadoConMenorRetraso = null;
+    private LinkedHashMap<Integer, Empleado> empleados;
+    private LinkedHashMap<Integer, Proyecto> proyectos;
 
     public HomeSolution(){
-        this.empleados = new LinkedHashSet<>();
-        this.proyectos = new LinkedHashSet<>();
+        this.empleados = new LinkedHashMap<>();
+        this.proyectos = new LinkedHashMap<>();
     }
 
     // ============================================================
@@ -27,7 +21,7 @@ public class HomeSolution implements IHomeSolution{
             throw new IllegalArgumentException("El valor no puede ser negativo");
         }
         Empleado empleado = new EmpleadoContratado(nombre,valor);
-        this.empleados.add(empleado);
+        empleados.put(empleado.mostrarLegajo(),empleado);
         System.out.println("Empleado contratado registrado");
     }
     //Registra empleado permanenete // utilizamos sobreEscritura
@@ -43,7 +37,7 @@ public class HomeSolution implements IHomeSolution{
         }
 
         Empleado empleado = new EmpleadoPermanente(nombre, valor, categoria);
-        this.empleados.add(empleado);
+        empleados.put(empleado.mostrarLegajo(), empleado);
         System.out.println("Empleado Permanente registrado");
     }
 
@@ -54,11 +48,14 @@ public class HomeSolution implements IHomeSolution{
     //Registra el proyecto y lo agrega a la lista
     @Override
     public void registrarProyecto(String[] titulos, String[] descripcion, double[] dias, String domicilio, String[] cliente, String inicio, String fin) throws IllegalArgumentException {
+        if(fin.isEmpty() || fin.equals("    -  -  ") || inicio.isEmpty() || inicio.equals("    -  -  ")){
+            throw new IllegalArgumentException("Debe ingresar una fecha válida antes de registrar el proyecto.");
+        }
         Proyecto proyecto = new Proyecto(cliente,titulos,descripcion,dias,domicilio, inicio, fin);
         if(LocalDate.parse(inicio).isAfter(LocalDate.parse(fin))){
             throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin");
         }
-        this.proyectos.add(proyecto);
+        proyectos.put(proyecto.verId(), proyecto);
         System.out.println("proyecto registrado exitosamente");
     }
 
@@ -71,17 +68,14 @@ public class HomeSolution implements IHomeSolution{
         int minLegajo = Integer.MAX_VALUE;
         List<Tarea> tareas = new ArrayList<>();
         Empleado empleadoDisponible = null;
-        for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
+        Proyecto proyecto = proyectos.get(numero);
                 if(proyecto.verEstado().equals(Estado.finalizado)){
                     throw new Exception("el proyecto se encuentra finalizado");
                 }
                 proyecto.cambiarEstado(Estado.activo);
                 tareas = proyecto.verTareas();
-            }
-        }
 
-        for (Empleado empleado : empleados){
+        for (Empleado empleado : empleados.values()){
             if(empleado.estaDisponible() && empleado.mostrarLegajo() < minLegajo){
                 minLegajo = empleado.mostrarLegajo();
                 empleadoDisponible = empleado;
@@ -102,14 +96,14 @@ public class HomeSolution implements IHomeSolution{
             if(tarea.verTitulo().equals(titulo) && tarea.verEmpleado() == null){
                 tarea.asignarEmpleado(empleadoDisponible);
                 empleadoDisponible.modificarDisponible(false);
-                for (Empleado empleado : empleados){
+                for (Empleado empleado : empleados.values()){
                     if(empleado.mostrarLegajo() == empleadoDisponible.mostrarLegajo()){
                         empleado.modificarDisponible(false);
                     }
                 }
             }
         }
-        for (Empleado empleado : empleados){
+        for (Empleado empleado : empleados.values()){
             System.out.println(empleado.mostrarNombre() + " " + empleado.estaDisponible());
         }
     }
@@ -120,21 +114,19 @@ public class HomeSolution implements IHomeSolution{
         Empleado empleadoConMenorRetraso = null;
         boolean proyectoEncontrado = false;
 
-        for (Proyecto proyecto : proyectos) {
-            if (proyecto.verId() == numero) {
-                proyectoEncontrado = true;
-                if (proyecto.verEstado().equals(Estado.finalizado)) {
-                    throw new Exception("El proyecto se encuentra finalizado");
-                }
-                tareas = proyecto.verTareas();
-            }
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            proyectoEncontrado = true;
+            tareas = proyecto.verTareas();
         }
-
+        if (proyecto.verEstado().equals(Estado.finalizado)) {
+            throw new Exception("El proyecto se encuentra finalizado");
+        }
         if (!proyectoEncontrado) {
             throw new Exception("Proyecto no encontrado");
         }
 
-        for (Empleado empleado : empleados) {
+        for (Empleado empleado : empleados.values()) {
             if (empleado.estaDisponible()) {
                 if (empleadoConMenorRetraso == null || empleado.mostrarCantidadRetrasos() < empleadoConMenorRetraso.mostrarCantidadRetrasos()) {
                     empleadoConMenorRetraso = empleado;
@@ -169,11 +161,10 @@ public class HomeSolution implements IHomeSolution{
             throw new IllegalArgumentException("La cantidad de dias debe ser mayor a 0");
         }
 
-        for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-                tareas = proyecto.verTareas();
-                p = proyecto;
-            }
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            tareas = proyecto.verTareas();
+            p = proyecto;
         }
         for (Tarea tarea : tareas){
             if(tarea.verTitulo().equals(titulo)){
@@ -193,6 +184,10 @@ public class HomeSolution implements IHomeSolution{
 
     @Override // faltan cosas
     public void agregarTareaEnProyecto(Integer numero, String titulo, String descripcion, double dias) throws IllegalArgumentException {
+        System.out.println("entra");
+        if(titulo.isEmpty() || descripcion.isEmpty() || dias == 0){
+            throw new IllegalArgumentException("Ingrese datos correctos");
+        }
         if (dias != 0.5 && dias < 1) {
             throw new IllegalArgumentException("La cantidad de días debe ser 0.5 o >= 1");
         }
@@ -203,63 +198,79 @@ public class HomeSolution implements IHomeSolution{
         if(descripcion.matches(".*\\d.*")){
             throw new IllegalArgumentException("no se admite numeros");
         }
-        for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-                if(proyecto.estaFinalizado()){
-                    throw new IllegalArgumentException("El proyecto se encuentra finalizado");
-                }
-                proyecto.agregarTarea(titulo, descripcion, dias);
-                //Actualización de fecha de finalización
-                LocalDate nuevaFechaFinalizacion = proyecto.verFechaRealFinalizacion();
-                nuevaFechaFinalizacion = nuevaFechaFinalizacion.plusDays((long) dias);
-                proyecto.actualizarFechaRealFinalizacion(nuevaFechaFinalizacion);
-                //Actualización de fecha Estimada
-                LocalDate nuevaFechaEstimadaFinalizacion = proyecto.verFechaEstimadaFinalizacion();
-                nuevaFechaFinalizacion = nuevaFechaEstimadaFinalizacion.plusDays((long) dias);
-                proyecto.actualizarFechaEstimadaFinalizacion(nuevaFechaFinalizacion);
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            if(proyecto.estaFinalizado()){
+                throw new IllegalArgumentException("El proyecto se encuentra finalizado");
             }
+            proyecto.agregarTarea(titulo, descripcion, dias);
+            //Actualización de fecha de finalización
+            LocalDate nuevaFechaFinalizacion = proyecto.verFechaRealFinalizacion();
+            nuevaFechaFinalizacion = nuevaFechaFinalizacion.plusDays((long) dias);
+            proyecto.actualizarFechaRealFinalizacion(nuevaFechaFinalizacion);
+            //Actualización de fecha Estimada
+            LocalDate nuevaFechaEstimadaFinalizacion = proyecto.verFechaEstimadaFinalizacion();
+            nuevaFechaFinalizacion = nuevaFechaEstimadaFinalizacion.plusDays((long) dias);
+            proyecto.actualizarFechaEstimadaFinalizacion(nuevaFechaFinalizacion);
         }
+        /*for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+
+            }
+        }*/
 
     }
 
     @Override
     public void finalizarTarea(Integer numero, String titulo) throws Exception {
         Empleado empleado = null;
-        for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-                if(proyecto.seleccionarTarea(titulo).estaFinalizada()){
-                    throw new Exception("la tarea se encuentra finalizada");
-                }
-                Tarea tarea = proyecto.seleccionarTarea(titulo);
-                tarea.finalizarTarea();
-                System.out.println(tarea.verEmpleado() + "" + tarea.verEmpleado().estaDisponible());
+
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            if(proyecto.seleccionarTarea(titulo).estaFinalizada()){
+                throw new Exception("la tarea se encuentra finalizada");
             }
+            Tarea tarea = proyecto.seleccionarTarea(titulo);
+            tarea.finalizarTarea();
+            System.out.println(tarea.verEmpleado() + "" + tarea.verEmpleado().estaDisponible());
         }
+        /*for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+
+            }
+        }*/
     }
 
     @Override
     public void finalizarProyecto(Integer numero, String fin) throws IllegalArgumentException {
-        for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-                if(proyecto.verFechaDeInicio().isAfter(LocalDate.parse(fin))){
-                    throw new IllegalArgumentException("la fecha de finalización no puede ser anterior a la de inicio");
-                }
-                if(proyecto.verFechaEstimadaFinalizacion().isAfter(LocalDate.parse(fin))){
-                    throw new IllegalArgumentException("La fecha de finalización no puede ser menor a la fecha estimada de finalización");
-                }
-
-                List<Tarea> tareas = proyecto.verTareas();
-                for(Tarea tarea : tareas) {
-                    if(proyecto.verFechaEstimadaFinalizacion().isBefore(LocalDate.parse(fin))){
-                        tarea.retrasarTarea();
-                    }
-                    if(tarea.verEmpleado() != null) {
-                        tarea.verEmpleado().modificarDisponible(true);
-                    }
-                }
-                proyecto.actualizarFinalizado();
-            }
+        Proyecto proyecto = proyectos.get(numero);
+        if(fin.isEmpty() || fin.equals("-  -")){
+            throw new IllegalArgumentException("Debe ingresar una fecha válida antes de finalizar el proyecto.");
         }
+        if(proyecto != null && !fin.isEmpty()){
+            if(proyecto.verFechaDeInicio().isAfter(LocalDate.parse(fin))){
+                throw new IllegalArgumentException("la fecha de finalización no puede ser anterior a la de inicio");
+            }
+            if(proyecto.verFechaEstimadaFinalizacion().isAfter(LocalDate.parse(fin))){
+                throw new IllegalArgumentException("La fecha de finalización no puede ser menor a la fecha estimada de finalización");
+            }
+
+            List<Tarea> tareas = proyecto.verTareas();
+            for(Tarea tarea : tareas) {
+                if(proyecto.verFechaEstimadaFinalizacion().isBefore(LocalDate.parse(fin))){
+                    tarea.retrasarTarea();
+                }
+                if(tarea.verEmpleado() != null) {
+                    tarea.verEmpleado().modificarDisponible(true);
+                }
+            }
+            proyecto.actualizarFinalizado();
+        }
+        /*for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+
+            }
+        }*/
     }
     // ============================================================
     // REASIGNACIÓN DE EMPLEADOS
@@ -267,56 +278,33 @@ public class HomeSolution implements IHomeSolution{
 
     @Override
     public void reasignarEmpleadoEnProyecto(Integer numero, Integer legajo, String titulo) throws Exception {
-        System.out.println("reasignarEmpleadoEnProyectooooooooooooooooooooooooooooooooooooooooo");
-        List<Tarea> tareas = new ArrayList<>();
-        //Recorremos la lista de proyectos buscando que el id del proyecto sea igual al numero del parametro
-        //si lo encontramos guardamos la lista de tareas
-        for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-                tareas = proyecto.verTareas();
-            }
-        }
-        /*recorremos la lista de tareas del proyecto en busqueda de encontrar el titulo pasado por parametro
-        si lo encontramos asignamos un empleado disponible a la tarea y le sacamos el disponible
-         */
-        for (Tarea tarea : tareas){
-            if(tarea.verTitulo().equals(titulo)){
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            Tarea tarea = proyecto.seleccionarTarea(titulo);
+            Empleado empleado = empleados.get(legajo);
+            if(tarea != null){
                 if(tarea.verEmpleado() == null){
                     throw new Exception("No se encuentra empleado asignado anteriormente");
                 }
-                for (Empleado e : empleados){
-                    if(e.estaDisponible() && e.mostrarLegajo() == legajo){
-                        tarea.asignarEmpleado(e);
-                        e.modificarDisponible(false);
-                    }
-                    /*//solucionar esto
-                    if(!e.estaDisponible()){
-                        throw new Exception("No se encuentran empleados disponibles");
-                    }*/
+                if(empleado != null && empleado.estaDisponible()){
+                    tarea.verEmpleado().modificarDisponible(true);
+                    tarea.asignarEmpleado(empleado);
+                    empleado.modificarDisponible(false);
                 }
-            }
-        }
-        /*Recorremos la lista de empleados buscando el legajo del empleado anterior para luego ponerlo como disponible*/
-        for (Empleado empleado : empleados){
-            if(empleado.mostrarLegajo() == legajo){
-                empleado.modificarDisponible(true);
             }
         }
     }
 
     @Override
     public void reasignarEmpleadoConMenosRetraso(Integer numero, String titulo) throws Exception {
-        List<Tarea> tareas = new ArrayList<>();
         Empleado empleadoConMenorRetraso = null;
         boolean proyectoEncontrado = false;
 
-        for (Proyecto proyecto : proyectos) {
-            if (proyecto.verId() == numero) {
-                proyectoEncontrado = true;
-                if (proyecto.verEstado().equals(Estado.finalizado)) {
-                    throw new Exception("El proyecto se encuentra finalizado");
-                }
-                tareas = proyecto.verTareas();
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            proyectoEncontrado = true;
+            if (proyecto.verEstado().equals(Estado.finalizado)) {
+                throw new Exception("El proyecto se encuentra finalizado");
             }
         }
 
@@ -324,7 +312,7 @@ public class HomeSolution implements IHomeSolution{
             throw new Exception("Proyecto no encontrado");
         }
 
-        for (Empleado empleado : empleados) {
+        for (Empleado empleado : empleados.values()) {
             if (empleado.estaDisponible()) {
                 if (empleadoConMenorRetraso == null || empleado.mostrarCantidadRetrasos() < empleadoConMenorRetraso.mostrarCantidadRetrasos()) {
                     empleadoConMenorRetraso = empleado;
@@ -335,14 +323,11 @@ public class HomeSolution implements IHomeSolution{
         if (empleadoConMenorRetraso == null) {
             throw new Exception("No se encuentra empleado disponible");
         }
-
-        for (Tarea tarea : tareas) {
-            if (tarea.verTitulo().equals(titulo)) {
-                tarea.asignarEmpleado(empleadoConMenorRetraso);
-                empleadoConMenorRetraso.modificarDisponible(false);
-                System.out.println("Responsable con menor retraso asignado: " + empleadoConMenorRetraso.mostrarNombre());
-                break;
-            }
+        Tarea tarea = proyecto.seleccionarTarea(titulo);
+        if(tarea != null){
+            tarea.asignarEmpleado(empleadoConMenorRetraso);
+            empleadoConMenorRetraso.modificarDisponible(false);
+            System.out.println("Responsable con menor retraso asignado: " + empleadoConMenorRetraso.mostrarNombre());
         }
     }
 
@@ -354,12 +339,16 @@ public class HomeSolution implements IHomeSolution{
     public double costoProyecto(Integer numero) {
         double costoProyecto = 0;
         List<Tarea> tareas = new ArrayList<>();
-        for(Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-                costoProyecto = proyecto.calculoCostoFinal();
-                tareas = proyecto.verTareas();
-            }
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            costoProyecto = proyecto.calculoCostoFinal();
+            tareas = proyecto.verTareas();
         }
+        /*for(Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+
+            }
+        }*/
         return costoProyecto;
     }
 
@@ -367,7 +356,7 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public List<Tupla<Integer, String>> proyectosFinalizados() {
         List<Tupla<Integer, String>> listaTupla = new ArrayList<>();
-        for (Proyecto proyecto : proyectos){
+        for (Proyecto proyecto : proyectos.values()){
             if(proyecto.verEstado().equals(Estado.finalizado)){
                 listaTupla.add(new Tupla<Integer, String>(proyecto.verId(), proyecto.verDireccion()));
             }
@@ -378,7 +367,7 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public List<Tupla<Integer, String>> proyectosPendientes() {
         List<Tupla<Integer,String>> listaTupla = new ArrayList<>();
-        for (Proyecto proyecto : proyectos){
+        for (Proyecto proyecto : proyectos.values()){
             if(proyecto.verEstado().equals(Estado.pendiente)){
                 listaTupla.add(new Tupla<Integer, String>(proyecto.verId(),proyecto.verDireccion()));
             }
@@ -389,7 +378,7 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public List<Tupla<Integer, String>> proyectosActivos() {
         List<Tupla<Integer, String>> listaTupla = new ArrayList<>();
-        for (Proyecto proyecto : proyectos){
+        for (Proyecto proyecto : proyectos.values()){
             if(proyecto.verEstado().equals(Estado.activo)){
                 listaTupla.add(new Tupla<Integer, String>(proyecto.verId(), proyecto.verDireccion()));
             }
@@ -400,18 +389,23 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public Object[] empleadosNoAsignados() {
         List<Object> lista = new ArrayList<>();
-        for(Empleado empleado : empleados){
-            if(empleado.estaDisponible()){
+        Iterator<Empleado> it = empleados.values().iterator();
+
+        while (it.hasNext()) {
+            Empleado empleado = it.next();
+            if (empleado.estaDisponible()) {
                 lista.add(empleado);
             }
         }
         return lista.toArray();
     }
 
+
     @Override
     public boolean estaFinalizado(Integer numero) {
-        for(Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero && proyecto.verEstado().equals(Estado.finalizado)){
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            if(proyecto.verEstado().equals(Estado.finalizado)){
                 return true;
             }
         }
@@ -421,29 +415,37 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public int consultarCantidadRetrasosEmpleado(Integer legajo) {
         System.out.println("consultarCantidadRetrasoEmpleado");
-        for (Empleado empleado: empleados){
-            if(empleado.mostrarLegajo() == legajo){
-                return empleado.mostrarCantidadRetrasos();
-            }
+        Empleado empleado = empleados.get(legajo);
+        if(empleado != null){
+            return empleado.mostrarCantidadRetrasos();
         }
-        return 5;
+        /*for (Empleado empleado: empleados){
+            if(empleado.mostrarLegajo() == legajo){
+
+            }
+        }*/
+        return 0;
     }
 
     @Override
     public List<Tupla<Integer, String>> empleadosAsignadosAProyecto(Integer numero) {
         List<Tupla<Integer, String>> empleados = new ArrayList<>();
 
-        for (Proyecto proyecto : proyectos) {
-            if (proyecto.verId() == numero) { // Filtramos solo el proyecto indicado
-                List<Tarea> tareas = proyecto.verTareas();
-                for (Tarea tarea : tareas) {
-                    Empleado empleado = tarea.verEmpleado();
-                    if (empleado != null) { // Comprobamos que la tarea tenga empleado
-                        empleados.add(new Tupla<>(empleado.mostrarLegajo(), empleado.mostrarNombre()));
-                    }
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            List<Tarea> tareas = proyecto.verTareas();
+            for (Tarea tarea : tareas) {
+                Empleado empleado = tarea.verEmpleado();
+                if (empleado != null) { // Comprobamos que la tarea tenga empleado
+                    empleados.add(new Tupla<>(empleado.mostrarLegajo(), empleado.mostrarNombre()));
                 }
             }
         }
+        /*for (Proyecto proyecto : proyectos) {
+            if (proyecto.verId() == numero) { // Filtramos solo el proyecto indicado
+
+            }
+        }*/
         return empleados;
     }
 
@@ -456,17 +458,22 @@ public class HomeSolution implements IHomeSolution{
         List<Object> listaTareas = new ArrayList<>();
         List<Tarea> tareas = new ArrayList<>();
 
-        for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-                 tareas = proyecto.verTareas();
-            }
-            if (proyecto == null) {
-                throw new IllegalArgumentException("Proyecto inexistente");
-            }
-            if (proyecto.estaFinalizado()) {
-                throw new IllegalArgumentException("Proyecto finalizado");
-            }
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            tareas = proyecto.verTareas();
         }
+        if (proyecto == null) {
+            throw new IllegalArgumentException("Proyecto inexistente");
+        }
+        if (proyecto.estaFinalizado()) {
+            throw new IllegalArgumentException("Proyecto finalizado");
+        }
+        /*for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+
+            }
+
+        }*/
         for (Tarea tarea : tareas){
             if(tarea.verEmpleado() == null){
                 listaTareas.add(tarea);
@@ -478,32 +485,44 @@ public class HomeSolution implements IHomeSolution{
     @Override
     public Object[] tareasDeUnProyecto(Integer numero) {
         List<Tarea> tareas = new ArrayList<>();
-        for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-                tareas = proyecto.verTareas();
-            }
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            tareas = proyecto.verTareas();
         }
+        /*for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+
+            }
+        }*/
         List<Object> listaTareas = new ArrayList<>(tareas);
         return listaTareas.toArray();
     }
 
     @Override
     public String consultarDomicilioProyecto(Integer numero) {
-        for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-                return proyecto.verDireccion();
-            }
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            return proyecto.verDireccion();
         }
+        /*for (Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+
+            }
+        }*/
         return "";
     }
 
     @Override
     public boolean tieneRestrasos(Integer legajo) {
-        for (Empleado empleado : empleados){
-            if(empleado.mostrarLegajo() == legajo && empleado.estaRetrasado()){
-                return true;
-            }
+        Empleado empleado = empleados.get(legajo);
+        if(empleado != null && empleado.estaRetrasado()){
+            return true;
         }
+        /*for (Empleado empleado : empleados.values()){
+            if(empleado.mostrarLegajo() == legajo && ){
+
+            }
+        }*/
         return false;
     }
 
@@ -512,7 +531,7 @@ public class HomeSolution implements IHomeSolution{
     public List<Tupla<Integer, String>> empleados() {
         List<Tupla<Integer, String>> listaEmpleados = new ArrayList<>();
 
-        for (Empleado empleado : empleados) {
+        for (Empleado empleado : empleados.values()) {
             listaEmpleados.add(new Tupla<>(empleado.mostrarLegajo(), empleado.mostrarNombre()));
         }
 
@@ -521,11 +540,15 @@ public class HomeSolution implements IHomeSolution{
 
     @Override
     public String consultarProyecto(Integer numero) {
-        for(Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-                return proyecto.toString();
-            }
+        Proyecto proyecto = proyectos.get(numero);
+        if(proyecto != null){
+            return proyecto.toString();
         }
+        /*for(Proyecto proyecto : proyectos){
+            if(proyecto.verId() == numero){
+
+            }
+        }*/
         return "Proyecto no encontrado";
     }
 }

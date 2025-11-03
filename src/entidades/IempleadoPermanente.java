@@ -1,7 +1,7 @@
 package entidades;
 
 public interface IempleadoPermanente {
-    void modificarValorDia();
+    void modificarValorDia(double nuevoValor);
     double verValorDia();
     String verCategoria();
     double verAdicional();

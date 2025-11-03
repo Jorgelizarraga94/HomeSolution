@@ -57,6 +57,7 @@ public class FormularioProyecto extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int numFila = modelTabla.getRowCount() + 1;
                 Object[] nuevaFila = {
+
                         textTituloTarea.getText(),
                         textDescTarea.getText(),
                         textDiasTarea.getText()
