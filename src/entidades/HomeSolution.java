@@ -386,6 +386,7 @@ public class HomeSolution implements IHomeSolution{
         return listaTupla;
     }
 
+
     @Override
     public Object[] empleadosNoAsignados() {
         List<Object> lista = new ArrayList<>();
@@ -419,11 +420,7 @@ public class HomeSolution implements IHomeSolution{
         if(empleado != null){
             return empleado.mostrarCantidadRetrasos();
         }
-        /*for (Empleado empleado: empleados){
-            if(empleado.mostrarLegajo() == legajo){
 
-            }
-        }*/
         return 0;
     }
 
@@ -441,11 +438,6 @@ public class HomeSolution implements IHomeSolution{
                 }
             }
         }
-        /*for (Proyecto proyecto : proyectos) {
-            if (proyecto.verId() == numero) { // Filtramos solo el proyecto indicado
-
-            }
-        }*/
         return empleados;
     }
 
@@ -468,12 +460,7 @@ public class HomeSolution implements IHomeSolution{
         if (proyecto.estaFinalizado()) {
             throw new IllegalArgumentException("Proyecto finalizado");
         }
-        /*for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
 
-            }
-
-        }*/
         for (Tarea tarea : tareas){
             if(tarea.verEmpleado() == null){
                 listaTareas.add(tarea);
@@ -489,11 +476,6 @@ public class HomeSolution implements IHomeSolution{
         if(proyecto != null){
             tareas = proyecto.verTareas();
         }
-        /*for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-
-            }
-        }*/
         List<Object> listaTareas = new ArrayList<>(tareas);
         return listaTareas.toArray();
     }
@@ -504,11 +486,6 @@ public class HomeSolution implements IHomeSolution{
         if(proyecto != null){
             return proyecto.verDireccion();
         }
-        /*for (Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-
-            }
-        }*/
         return "";
     }
 
@@ -544,11 +521,6 @@ public class HomeSolution implements IHomeSolution{
         if(proyecto != null){
             return proyecto.toString();
         }
-        /*for(Proyecto proyecto : proyectos){
-            if(proyecto.verId() == numero){
-
-            }
-        }*/
         return "Proyecto no encontrado";
     }
 }

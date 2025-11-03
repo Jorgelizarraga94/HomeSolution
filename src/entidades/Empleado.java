@@ -1,6 +1,6 @@
 package entidades;
 
-public class Empleado implements Iempleado{
+public abstract class Empleado implements Iempleado{
     public String nombre;
     public int legajo;
     public static int contadorLegajo=1;

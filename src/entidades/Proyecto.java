@@ -101,11 +101,6 @@ public class Proyecto implements Iproyecto{
         if(tarea != null){
             return tarea;
         }
-        /*for (Tarea tarea : tareas){
-            if(tarea.verTitulo().equals(titulo)){
-
-            }
-        }*/
         return null;
     }
 
