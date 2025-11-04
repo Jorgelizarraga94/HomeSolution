@@ -2,9 +2,12 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import entidades.HomeSolution;
 import entidades.IHomeSolution;
 import entidades.Tupla;
@@ -24,9 +27,8 @@ public class HomeSolutionTest {
         homeSolution.registrarProyecto(titulos,descripciones,duracion,"San Martin 1000",cliente,"2025-12-01","2025-12-05");
         homeSolution.registrarEmpleado("Juan",15000);
         homeSolution.registrarEmpleado("Luis",80000, "EXPERTO");
-
-        homeSolution.registrarEmpleado("Carlos", 50000,"INICIAL");
         homeSolution.registrarEmpleado("Julieta",15000);
+        homeSolution.registrarEmpleado("Carlos", 50000,"INICIAL");
         homeSolution.registrarProyecto(titulos,descripciones,duracion,"Libertador 500", cliente,"2025-12-10","2025-12-15");
     }
 
@@ -193,9 +195,9 @@ public class HomeSolutionTest {
     }
     @Test
     public void testEmpleadosLiberadosCorrectamente() throws Exception{
-        Integer numeroProyecto = homeSolution.proyectosPendientes().get(0).getValor1();
+        Integer numeroProyecto = (homeSolution.proyectosPendientes().get(0)).getValor1();
         asignarTareas(numeroProyecto);
-        homeSolution.finalizarProyecto(numeroProyecto,"2025-12-20");
+        homeSolution.finalizarProyecto(numeroProyecto,"2025-12-06");
         assertTrue(homeSolution.empleadosNoAsignados().length==4);
     }
     
@@ -220,16 +222,22 @@ public class HomeSolutionTest {
         Object[] emp=homeSolution.empleadosNoAsignados();
         Integer legajo=Integer.parseInt(emp[0].toString());
         homeSolution.reasignarEmpleadoEnProyecto(numeroProyecto,legajo,"Instalacion electrica");
-        double costo=calculoCostoSinRetraso()-80000*2*1.02*1.35+20000*2*8*1.35;
+        double costo=calculoCostoSinRetraso();  // Calculo el costo original sin retrasos
+        costo /= 1.35;         // quito el porcentaje adicional
+        costo -= 80000*2*1.02; // quito el costo del responsable reemplazado
+        costo += 20000*2*8;    // agrego el costo del nuevo responsable
+        costo *= 1.35;         // Agrego el porenteja adicional por no tener demoras
         homeSolution.finalizarProyecto(numeroProyecto,"2025-12-05");
         assertEquals(costo, homeSolution.costoProyecto(numeroProyecto), 0.001);
     }
 
+
+
     private void asignarTareas(Integer numeroProyecto) throws Exception{
         homeSolution.asignarResponsableEnTarea(numeroProyecto,"Pintar");
         homeSolution.asignarResponsableEnTarea(numeroProyecto,"Instalacion electrica");
-        homeSolution.asignarResponsableEnTarea(numeroProyecto,"Instalar AA");
         homeSolution.asignarResponsableEnTarea(numeroProyecto,"Trabajos jardineria");
+        homeSolution.asignarResponsableEnTarea(numeroProyecto,"Instalar AA");
     }
     private double calcularCosto(){
         double costo=0;
