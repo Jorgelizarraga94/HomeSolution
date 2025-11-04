@@ -87,7 +87,7 @@ public class FormularioProyecto extends JPanel {
                    panelManager.mostrar(5);
                }
                catch (IllegalArgumentException exception){
-                   JOptionPane.showMessageDialog(null, "Los valores ingresados no son validos");
+                   JOptionPane.showMessageDialog(null, exception.getMessage());
                }
             }
         });

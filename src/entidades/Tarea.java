@@ -13,7 +13,10 @@ public class Tarea implements ITarea{
     public Tarea(String titulo, String descripcion, double cantidadDiasFinalizacion) {
         this.titulo = titulo;
         this.descripcion = descripcion;
-        this.cantidadDiasFinalizacion = cantidadDiasFinalizacion;
+        if(cantidadDiasFinalizacion>0){
+            this.cantidadDiasFinalizacion = cantidadDiasFinalizacion;
+        }
+
         this.costo = costo;
         this.empleado = null;
         this.tieneRetraso = false;
@@ -73,7 +76,7 @@ public class Tarea implements ITarea{
 
 
     @Override
-    public void calcularCosto() { /// //////////////////////////////////////////
+    public void calcularCosto() {
         double costoFinal = 0;
         double costoPorDia = 0;
         if(this.empleado instanceof EmpleadoContratado){
@@ -90,7 +93,7 @@ public class Tarea implements ITarea{
                 cantidadDiasFinalizacion = 1;
             }
             costoFinal = this.cantidadDiasFinalizacion * (((EmpleadoPermanente) empleado).verValorDia());
-            costoFinal = costoFinal * 1.02;
+            costoFinal = costoFinal * (((EmpleadoPermanente) empleado).verAdicional());
         }
         this.costo = costoFinal;
     }

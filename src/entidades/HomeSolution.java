@@ -18,6 +18,7 @@ public class HomeSolution implements IHomeSolution{
     //Registra empleado contratado
     @Override
     public void registrarEmpleado(String nombre, double valor) throws IllegalArgumentException {
+        if(nombre == null || nombre.isEmpty()){ throw new IllegalArgumentException("El nombre no puede estar vacio"); };
         if(valor < 0){ throw new IllegalArgumentException("El valor no puede ser negativo"); }
         Empleado empleado = new EmpleadoContratado(nombre,valor);
         empleados.put(empleado.mostrarLegajo(),empleado);
@@ -25,9 +26,10 @@ public class HomeSolution implements IHomeSolution{
     //Registra empleado permanente
     @Override
     public void registrarEmpleado(String nombre, double valor, String categoria) throws IllegalArgumentException {
+        if(nombre == null || nombre.isEmpty()){ throw new IllegalArgumentException("El nombre no puede estar vacio"); };
         if(valor < 0){ throw new IllegalArgumentException("El valor no puede ser negativo"); }
         List<String> categoriasValidas = List.of("INICIAL", "TECNICO", "EXPERTO");
-        if (!categoriasValidas.contains(categoria)) { throw new IllegalArgumentException("Ingrese una categoria valida"); }
+        if (!categoriasValidas.contains(categoria) || categoria == null || categoria.isEmpty()) { throw new IllegalArgumentException("Ingrese una categoria valida"); }
 
         Empleado empleado = new EmpleadoPermanente(nombre, valor, categoria);
         empleados.put(empleado.mostrarLegajo(), empleado);
@@ -43,18 +45,59 @@ public class HomeSolution implements IHomeSolution{
         if(fin.isEmpty() || fin.equals("    -  -  ") || inicio.isEmpty() || inicio.equals("    -  -  ")){
             throw new IllegalArgumentException("Debe ingresar una fecha válida antes de registrar el proyecto.");
         }
-
-        Proyecto proyecto = new Proyecto(cliente,titulos,descripcion,dias,domicilio, inicio, fin);
-
         if(LocalDate.parse(inicio).isAfter(LocalDate.parse(fin))){
             throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin");
         }
+        // Validar datos del cliente
+        if (cliente == null || cliente.length < 3) {
+            throw new IllegalArgumentException("Los datos del cliente son incompletos.");
+        }
+
+        String nombre = cliente[0];
+        String email = cliente[1];
+
+        if (nombre == null || nombre.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del cliente no puede estar vacío.");
+        }
+        if(!email.isEmpty() && !email.contains("@")){
+            throw new IllegalArgumentException("Formato incorrecto de email");
+        }
+
+        // -------- Validación de arrays de tareas --------
+        if (titulos == null || descripcion == null || dias == null) {
+            throw new IllegalArgumentException("Debe ingresar los datos de las tareas del proyecto.");
+        }
+
+        if (titulos.length != descripcion.length || titulos.length != dias.length) {
+            throw new IllegalArgumentException("títulos, descripciones y días deben tener el mismo tamaño.");
+        }
+
+        for (int i = 0; i < titulos.length; i++) {
+            String titulo = titulos[i];
+            double cantDias = dias[i];
+
+            if (titulo == null || titulo.isEmpty()) {
+                throw new IllegalArgumentException("El título de la tarea no puede estar vacío.");
+            }
+            if (cantDias <= 0) {
+                throw new IllegalArgumentException("La cantidad de días de la tarea debe ser mayor a cero.");
+            }
+        }
+
+        // -------- Validación de domicilio --------
+        if (domicilio == null || domicilio.isEmpty()) {
+            throw new IllegalArgumentException("Debe ingresar un domicilio para el proyecto.");
+        }
+
+        Proyecto proyecto = new Proyecto(cliente,titulos,descripcion,dias,domicilio, inicio, fin);
+
         proyectos.put(proyecto.verId(), proyecto);
     }
 
     // ============================================================
     // ASIGNACIÓN Y GESTIÓN DE TAREAS
     // ============================================================
+
     //se asigna responsable en tarea
     @Override
     public void asignarResponsableEnTarea(Integer numero, String titulo) throws Exception {

@@ -5,9 +5,7 @@ public class Cliente implements Icliente{
     private String email;
     private String telefono;
 
-    // Constructor con validaciones
     public Cliente(String nombre, String email, String telefono) {
-        // Validar formato de teléfono y email
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
