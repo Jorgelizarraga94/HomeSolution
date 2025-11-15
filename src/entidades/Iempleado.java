@@ -10,4 +10,5 @@ public interface Iempleado {
     void retrasarTarea();
     int mostrarCantidadRetrasos();
     void aumentarRetrasos();
+    double calculoCostoEmpleado(double diasFinalizacion);
 }

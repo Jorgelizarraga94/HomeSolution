@@ -18,5 +18,7 @@ public class Main {
         homeSolution.registrarEmpleado("Luis",80000, "EXPERTO");
         homeSolution.registrarEmpleado("Julieta",15000);
         PanelManager panelManager=new PanelManager(homeSolution);
+
+        System.out.println(homeSolution.toString());
         }
     }

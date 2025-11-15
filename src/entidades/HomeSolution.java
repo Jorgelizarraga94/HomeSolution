@@ -493,4 +493,32 @@ public class HomeSolution implements IHomeSolution{
         }
         return "Proyecto no encontrado";
     }
+
+    //Devuelve cantidad de empleados y datos del proyecto en consola, Utilizar con Sistem.Out.Println.
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== HomeSolution ===\n");
+
+        sb.append("\n-- Cantidad Empleados: --\n");
+        if(empleados.isEmpty()) {
+            sb.append("No hay empleados registrados.\n");
+        } else {
+            for (Empleado e : empleados.values()) {
+                sb.append(e.toString()).append("\n");
+            }
+        }
+
+        sb.append("\n-- Proyectos --\n");
+        if(proyectos.isEmpty()) {
+            sb.append("No hay proyectos registrados.\n");
+        } else {
+            for (Proyecto p : proyectos.values()) {
+                sb.append(p.toString()).append("\n");
+            }
+        }
+
+        return sb.toString();
+    }
+
 }

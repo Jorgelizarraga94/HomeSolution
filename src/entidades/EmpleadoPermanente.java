@@ -40,4 +40,15 @@ public class EmpleadoPermanente extends Empleado implements IempleadoPermanente{
     public String toString() {
         return Integer.toString(legajo);
     }
+
+    @Override
+    public double calculoCostoEmpleado(double cantidadDiasFinalizacion) {
+        double costoFinal=0;
+        if(cantidadDiasFinalizacion == 0.5){
+            cantidadDiasFinalizacion = 1;
+        }
+        costoFinal = cantidadDiasFinalizacion * this.valorDiaTrabajo;
+        costoFinal = costoFinal * this.verAdicional();
+        return costoFinal;
+    }
 }

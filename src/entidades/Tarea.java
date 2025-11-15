@@ -78,23 +78,9 @@ public class Tarea implements ITarea{
     @Override
     public void calcularCosto() {
         double costoFinal = 0;
-        double costoPorDia = 0;
-        if(this.empleado instanceof EmpleadoContratado){
-            if(cantidadDiasFinalizacion >= 1){
-                costoPorDia = ((EmpleadoContratado) empleado).verCostoHora() * 8;
-            }
-            if(cantidadDiasFinalizacion == 0.5){
-                costoPorDia = ((EmpleadoContratado) empleado).verCostoHora() * 4;
-            }
-            costoFinal = this.cantidadDiasFinalizacion * costoPorDia;
-        }
-        if(this.empleado instanceof EmpleadoPermanente){
-            if(this.cantidadDiasFinalizacion == 0.5){
-                cantidadDiasFinalizacion = 1;
-            }
-            costoFinal = this.cantidadDiasFinalizacion * (((EmpleadoPermanente) empleado).verValorDia());
-            costoFinal = costoFinal * (((EmpleadoPermanente) empleado).verAdicional());
-        }
+
+        costoFinal = this.empleado.calculoCostoEmpleado(cantidadDiasFinalizacion);
+
         this.costo = costoFinal;
     }
 
