@@ -8,6 +8,13 @@ public abstract class Empleado implements Iempleado{
     public boolean retrasoEnTarea;
     public int contadorRetrasos;
 
+    public Empleado (String nombre){
+        this.nombre = nombre;
+        this.legajo = contadorLegajo++;
+        this.disponible = true;
+        this.contadorRetrasos = 0;
+        this.retrasoEnTarea = false;
+    }
     @Override
     public boolean estaDisponible() {
         return this.disponible;

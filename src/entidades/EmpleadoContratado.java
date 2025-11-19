@@ -4,11 +4,8 @@ public class EmpleadoContratado extends Empleado implements IempleadoContratado{
     private double costoHora;
 
     public EmpleadoContratado(String nombre, double costoHora){
-        this.nombre = nombre;
-        this.legajo = contadorLegajo++;
+        super(nombre);
         this.costoHora = costoHora;
-        this.disponible = true;
-        this.contadorRetrasos = 0;
     }
     @Override
     public double verCostoHora() {

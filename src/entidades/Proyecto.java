@@ -164,7 +164,7 @@ public class Proyecto implements Iproyecto{
         String fin;
         String retraso;
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("========================================Detalle de Proyecto======================================").append('\n');
+        stringBuilder.append("==================Detalle de Proyecto==================").append('\n');
         stringBuilder.append("idProyecto: ").append(idProyecto).append('\n');
         stringBuilder.append("direccion de la vivienda: ").append(direccionVivienda).append('\n');
         stringBuilder.append("fecha de inicio de proyecto: ").append(fechaInicioProyecto).append('\n');
@@ -186,9 +186,9 @@ public class Proyecto implements Iproyecto{
             retraso = "No";
         }
         stringBuilder.append("Retraso: ").append(retraso).append('\n');
-        stringBuilder.append("========================================Detalle de Cliente======================================").append('\n');
+        stringBuilder.append("================Detalle de Cliente====================").append('\n');
         stringBuilder.append("cliente: ").append(cliente).append('\n');
-        stringBuilder.append("========================================Detalle de Tarea======================================").append('\n');
+        stringBuilder.append("================Detalle de Tarea======================").append('\n');
         stringBuilder.append("tareas: ").append(tareas).append('\n');
         return stringBuilder.toString();
     }
