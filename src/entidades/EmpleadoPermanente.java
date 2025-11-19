@@ -5,7 +5,6 @@ public class EmpleadoPermanente extends Empleado implements IempleadoPermanente{
     private String categoria;
     private double adicional;
 
-    //El legajo de empleadosPermanentes debe comenzar en 200
     public EmpleadoPermanente(String nombre, double valorDiaTrabajo, String categoria){
         super(nombre);
         this.valorDiaTrabajo = valorDiaTrabajo;
