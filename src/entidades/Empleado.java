@@ -59,6 +59,4 @@ public abstract class Empleado implements Iempleado{
     public void aumentarRetrasos() {
         this.contadorRetrasos++;
     }
-
-
 }
