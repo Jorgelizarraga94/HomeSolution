@@ -19,3 +19,5 @@ El diseño se basa en una correcta separación de responsabilidades, apoyándose
 - **Herencia** para reutilizar lógica común
 - **Polimorfismo** para resolver comportamientos en tiempo de ejecución
 - **Abstracción** para ocultar detalles de implementación
+
+<img width="1158" height="507" alt="HomeSolution imagen" src="https://github.com/user-attachments/assets/fe794cef-4528-494c-ab6f-79e283033396" />
